@@ -14,161 +14,250 @@
             padding: 0;
         }
 
-        html, body {
-            width: 100%;
+        html,
+        body {
             min-height: 100%;
         }
 
         body {
+            font-family: Arial, Helvetica, sans-serif;
             background:
-                radial-gradient(circle at 50% 35%, #18202b 0%, #0b0f14 42%, #05070a 100%);
-            color: #d8dee7;
-            font-family: "Segoe UI", Arial, sans-serif;
+                radial-gradient(circle at center, #17202b 0%, #080b10 55%, #030406 100%);
+            color: #d8e0e8;
             overflow-x: hidden;
         }
 
-        /* subtle background grid */
+        /* subtle technical grid */
         body::before {
             content: "";
             position: fixed;
             inset: 0;
-            pointer-events: none;
-            opacity: 0.12;
-
             background-image:
-                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-
-            background-size: 50px 50px;
+                linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .app {
             position: relative;
             z-index: 1;
-
             width: min(1100px, 92%);
             margin: 0 auto;
-            padding: 70px 0 60px;
+            padding: 60px 0 30px;
         }
 
         /* HEADER */
 
-        .header {
+        header {
             text-align: center;
-            margin-bottom: 55px;
+            margin-bottom: 50px;
         }
 
         .eyebrow {
             font-size: 12px;
             letter-spacing: 5px;
             text-transform: uppercase;
-            color: #718092;
-            margin-bottom: 16px;
+            color: #7f91a3;
+            margin-bottom: 14px;
         }
 
         h1 {
-            font-size: clamp(38px, 7vw, 72px);
+            font-size: clamp(42px, 8vw, 76px);
+            letter-spacing: 12px;
             font-weight: 300;
-            letter-spacing: 8px;
-            color: #f0f3f7;
-            text-shadow: 0 0 30px rgba(130, 170, 220, 0.18);
+            color: #eef3f7;
         }
 
         .subtitle {
-            margin-top: 18px;
-            font-size: 13px;
-            letter-spacing: 4px;
+            margin-top: 8px;
+            font-size: 14px;
+            letter-spacing: 8px;
             text-transform: uppercase;
-            color: #667382;
+            color: #8797a8;
         }
 
-        /* CENTRAL SYSTEM */
+        /* SYSTEM CORE */
+
+        .core-area {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0 65px;
+        }
 
         .system-core {
-            width: 240px;
-            height: 240px;
-            margin: 0 auto 65px;
-
+            position: relative;
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
 
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
 
             background:
-                radial-gradient(circle,
-                    rgba(110, 145, 180, 0.24) 0%,
-                    rgba(50, 70, 90, 0.08) 38%,
-                    transparent 70%);
+                radial-gradient(
+                    circle,
+                    rgba(75, 100, 120, 0.16) 0%,
+                    rgba(15, 20, 27, 0.8) 55%,
+                    rgba(3, 5, 8, 0.98) 100%
+                );
 
-            border: 1px solid rgba(130, 160, 190, 0.18);
+            border: 1px solid rgba(170, 190, 210, 0.22);
 
             box-shadow:
-                0 0 35px rgba(100, 140, 180, 0.08),
-                inset 0 0 45px rgba(100, 140, 180, 0.05);
-
-            position: relative;
+                0 0 35px rgba(100, 140, 170, 0.08),
+                inset 0 0 35px rgba(100, 140, 170, 0.05);
         }
 
-        .system-core::before {
-            content: "";
-            position: absolute;
-            width: 155px;
-            height: 155px;
-
-            border-radius: 50%;
-
-            border: 1px solid rgba(150, 180, 210, 0.20);
-
-            animation: pulse 4s ease-in-out infinite;
-        }
+        /* outer rotating technical ring */
 
         .system-core::after {
             content: "";
             position: absolute;
-            width: 90px;
-            height: 90px;
-
+            inset: -14px;
             border-radius: 50%;
-
-            border: 1px solid rgba(180, 200, 220, 0.28);
-            box-shadow:
-                0 0 25px rgba(120, 160, 200, 0.12);
-
-            animation: rotate 18s linear infinite;
+            border: 1px solid rgba(130, 160, 185, 0.18);
+            border-top-color: rgba(190, 210, 225, 0.65);
+            animation: rotateRing 14s linear infinite;
         }
 
-        .core-label {
+        /* soft pulse */
+
+        .system-core::before {
+            content: "";
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 1px solid rgba(150, 180, 200, 0.16);
+            animation: pulse 3.5s ease-in-out infinite;
+        }
+
+        .core-content {
             position: relative;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
-            text-align: center;
+        .umbra-crest {
+            width: 125px;
+            height: 125px;
+            object-fit: contain;
+
+            filter:
+                drop-shadow(0 0 8px rgba(150, 180, 205, 0.20))
+                drop-shadow(0 0 20px rgba(100, 140, 170, 0.10));
+
+            opacity: 0.94;
+
+            animation: crestPulse 5s ease-in-out infinite;
+        }
+
+        .system-status {
+            margin-top: 9px;
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: #7f91a3;
+        }
+
+        .online {
+            margin-top: 5px;
             font-size: 11px;
             letter-spacing: 3px;
+            color: #c5d2dc;
+        }
+
+        /* MODULES */
+
+        .modules-title {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 5px;
             text-transform: uppercase;
-            color: #aeb9c5;
+            color: #718292;
+            margin-bottom: 22px;
         }
 
-        .core-status {
-            margin-top: 8px;
-            color: #7f9aaf;
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        .module {
+            position: relative;
+            min-height: 155px;
+            padding: 25px;
+
+            background: rgba(10, 14, 19, 0.72);
+            border: 1px solid rgba(160, 180, 200, 0.12);
+
+            transition:
+                border-color 0.25s ease,
+                transform 0.25s ease,
+                background 0.25s ease;
+
+            overflow: hidden;
+        }
+
+        .module::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 35px;
+            height: 1px;
+            background: rgba(180, 200, 215, 0.55);
+        }
+
+        .module:hover {
+            transform: translateY(-3px);
+            border-color: rgba(180, 200, 215, 0.28);
+            background: rgba(18, 24, 31, 0.82);
+        }
+
+        .module-number {
             font-size: 10px;
+            letter-spacing: 3px;
+            color: #657585;
+            margin-bottom: 14px;
+        }
+
+        .module h2 {
+            font-size: 17px;
             letter-spacing: 2px;
+            font-weight: 400;
+            color: #e1e7ec;
+            margin-bottom: 12px;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(0.94);
-                opacity: 0.55;
-            }
-
-            50% {
-                transform: scale(1.04);
-                opacity: 1;
-            }
+        .module p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #7e8d9c;
         }
 
-        @keyframes rotate {
+        /* FOOTER */
+
+        footer {
+            text-align: center;
+            margin-top: 55px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(160, 180, 200, 0.08);
+
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #566574;
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes rotateRing {
             from {
                 transform: rotate(0deg);
             }
@@ -178,107 +267,95 @@
             }
         }
 
-        /* MODULES */
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 0.25;
+                transform: scale(1);
+            }
 
-        .section-title {
-            text-align: center;
-            font-size: 11px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: #596675;
-            margin-bottom: 24px;
+            50% {
+                opacity: 0.7;
+                transform: scale(1.025);
+            }
         }
 
-        .modules {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 18px;
-        }
+        @keyframes crestPulse {
+            0%,
+            100% {
+                opacity: 0.88;
+                transform: scale(1);
+            }
 
-        .module {
-            min-height: 145px;
-            padding: 25px;
-
-            background: rgba(13, 18, 24, 0.72);
-            border: 1px solid rgba(150, 170, 190, 0.12);
-            border-radius: 10px;
-
-            transition:
-                transform 0.25s ease,
-                border-color 0.25s ease,
-                background 0.25s ease;
-
-            cursor: pointer;
-        }
-
-        .module:hover {
-            transform: translateY(-3px);
-            border-color: rgba(150, 180, 210, 0.28);
-            background: rgba(20, 27, 35, 0.85);
-        }
-
-        .module-number {
-            font-size: 10px;
-            letter-spacing: 3px;
-            color: #566575;
-            margin-bottom: 20px;
-        }
-
-        .module h2 {
-            font-size: 20px;
-            font-weight: 400;
-            letter-spacing: 2px;
-            color: #dfe5eb;
-            margin-bottom: 10px;
-        }
-
-        .module p {
-            font-size: 12px;
-            line-height: 1.6;
-            color: #697685;
-        }
-
-        .module.disabled {
-            opacity: 0.48;
-            cursor: default;
-        }
-
-        .module.disabled:hover {
-            transform: none;
-            border-color: rgba(150, 170, 190, 0.12);
-            background: rgba(13, 18, 24, 0.72);
-        }
-
-        /* FOOTER */
-
-        footer {
-            margin-top: 65px;
-            text-align: center;
-            font-size: 10px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #3f4b57;
+            50% {
+                opacity: 1;
+                transform: scale(1.025);
+            }
         }
 
         /* MOBILE */
 
-        @media (max-width: 600px) {
+        @media (max-width: 700px) {
 
             .app {
-                padding-top: 45px;
+                padding-top: 40px;
+            }
+
+            header {
+                margin-bottom: 40px;
             }
 
             h1 {
+                letter-spacing: 7px;
+            }
+
+            .subtitle {
                 letter-spacing: 5px;
             }
 
             .system-core {
-                width: 200px;
-                height: 200px;
+                width: 215px;
+                height: 215px;
+            }
+
+            .umbra-crest {
+                width: 105px;
+                height: 105px;
             }
 
             .modules {
                 grid-template-columns: 1fr;
+            }
+
+            .module {
+                min-height: 135px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .app {
+                width: 88%;
+            }
+
+            h1 {
+                font-size: 38px;
+                letter-spacing: 5px;
+            }
+
+            .subtitle {
+                font-size: 11px;
+                letter-spacing: 4px;
+            }
+
+            .system-core {
+                width: 195px;
+                height: 195px;
+            }
+
+            .umbra-crest {
+                width: 95px;
+                height: 95px;
             }
         }
     </style>
@@ -286,33 +363,35 @@
 
 <body>
 
-    <main class="app">
+    <div class="app">
 
-        <header class="header">
-
-            <div class="eyebrow">
-                Personal Utility System
-            </div>
-
-            <h1>
-                UMBRA
-            </h1>
-
-            <div class="subtitle">
-                Life Support
-            </div>
-
+        <header>
+            <div class="eyebrow">Personal Utility System</div>
+            <h1>UMBRA</h1>
+            <div class="subtitle">Life Support</div>
         </header>
 
 
-        <section class="system-core">
+        <section class="core-area">
 
-            <div class="core-label">
+            <div class="system-core">
 
-                SYSTEM
+                <div class="core-content">
 
-                <div class="core-status">
-                    ONLINE
+                    <img
+                        class="umbra-crest"
+                        src="umbra_genetics_wappen_gross.png"
+                        alt="UMBRA crest"
+                    >
+
+                    <div class="system-status">
+                        SYSTEM
+                    </div>
+
+                    <div class="online">
+                        ONLINE
+                    </div>
+
                 </div>
 
             </div>
@@ -320,65 +399,62 @@
         </section>
 
 
-        <section>
+        <div class="modules-title">
+            Modules
+        </div>
 
-            <div class="section-title">
-                Modules
-            </div>
 
-            <div class="modules">
+        <section class="modules">
 
-                <div class="module">
+            <article class="module">
 
-                    <div class="module-number">
-                        MODULE 01
-                    </div>
-
-                    <h2>
-                        AC CALCULATOR
-                    </h2>
-
-                    <p>
-                        Air conditioning calculations and useful climate utilities.
-                    </p>
-
+                <div class="module-number">
+                    MODULE 01
                 </div>
 
+                <h2>
+                    AC CALCULATOR
+                </h2>
 
-                <div class="module disabled">
+                <p>
+                    Air conditioning calculations and useful climate utilities.
+                </p>
 
-                    <div class="module-number">
-                        MODULE 02
-                    </div>
+            </article>
 
-                    <h2>
-                        RESERVED
-                    </h2>
 
-                    <p>
-                        Future utility module.
-                    </p>
+            <article class="module">
 
+                <div class="module-number">
+                    MODULE 02
                 </div>
 
+                <h2>
+                    RESERVED
+                </h2>
 
-                <div class="module disabled">
+                <p>
+                    Future utility module.
+                </p>
 
-                    <div class="module-number">
-                        MODULE 03
-                    </div>
+            </article>
 
-                    <h2>
-                        RESERVED
-                    </h2>
 
-                    <p>
-                        Future utility module.
-                    </p>
+            <article class="module">
 
+                <div class="module-number">
+                    MODULE 03
                 </div>
 
-            </div>
+                <h2>
+                    RESERVED
+                </h2>
+
+                <p>
+                    Future utility module.
+                </p>
+
+            </article>
 
         </section>
 
@@ -387,7 +463,7 @@
             UMBRA LIFE SUPPORT · SYSTEM ONLINE
         </footer>
 
-    </main>
+    </div>
 
 </body>
 </html>

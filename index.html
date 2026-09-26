@@ -47,8 +47,6 @@ body::before {
     z-index: 1;
 }
 
-/* HEADER */
-
 .header {
     text-align: center;
     margin-bottom: 38px;
@@ -68,8 +66,6 @@ body::before {
     letter-spacing: 5px;
     color: #65747f;
 }
-
-/* CORE */
 
 .core-area {
     display: flex;
@@ -92,10 +88,10 @@ body::before {
     position: absolute;
     inset: 8px;
     border-radius: 50%;
-    border: 1px solid rgba(120, 145, 160, .24);
+    border: 1px solid rgba(120,145,160,.24);
     box-shadow:
-        0 0 35px rgba(70, 180, 130, .08),
-        inset 0 0 30px rgba(0, 0, 0, .8);
+        0 0 35px rgba(70,180,130,.08),
+        inset 0 0 30px rgba(0,0,0,.8);
 }
 
 .core::after {
@@ -103,7 +99,7 @@ body::before {
     position: absolute;
     inset: -8px;
     border-radius: 50%;
-    border: 1px solid rgba(110, 130, 145, .13);
+    border: 1px solid rgba(110,130,145,.13);
     animation: pulse 4s ease-in-out infinite;
 }
 
@@ -111,7 +107,7 @@ body::before {
     position: absolute;
     inset: -18px;
     border-radius: 50%;
-    border: 1px dashed rgba(110, 135, 150, .18);
+    border: 1px dashed rgba(110,135,150,.18);
     animation: rotate 28s linear infinite;
 }
 
@@ -123,7 +119,7 @@ body::before {
     height: 6px;
     border-radius: 50%;
     background: #58706a;
-    box-shadow: 0 0 12px rgba(85, 214, 122, .35);
+    box-shadow: 0 0 12px rgba(85,214,122,.35);
 }
 
 .outer-ring::before {
@@ -143,18 +139,16 @@ body::before {
     height: 115px;
     object-fit: contain;
     opacity: .92;
-    filter: drop-shadow(0 0 18px rgba(100, 150, 170, .12));
+    filter: drop-shadow(0 0 18px rgba(100,150,170,.12));
 }
 
 .online {
     margin-top: 24px;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 5px;
     color: #55d67a;
-    text-shadow: 0 0 10px rgba(85, 214, 122, .18);
+    text-shadow: 0 0 10px rgba(85,214,122,.18);
 }
-
-/* BUTTONS */
 
 .system-controls {
     display: flex;
@@ -165,45 +159,43 @@ body::before {
 }
 
 .system-button {
-    border: 1px solid rgba(150, 175, 190, .22);
-    background: rgba(8, 12, 16, .86);
+    border: 1px solid rgba(150,175,190,.22);
+    background: rgba(8,12,16,.86);
     color: #9eacb6;
-    padding: 12px 22px;
+    padding: 13px 24px;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 3px;
     cursor: pointer;
     transition: .2s ease;
 }
 
 .system-button:hover {
-    border-color: rgba(180, 200, 215, .45);
+    border-color: rgba(180,200,215,.45);
     color: #d8e0e5;
-    background: rgba(15, 22, 28, .95);
+    background: rgba(15,22,28,.95);
 }
 
 .start-button {
     color: #55d67a;
-    border-color: rgba(85, 214, 122, .30);
+    border-color: rgba(85,214,122,.30);
 }
 
 .start-button:hover {
     color: #75ed98;
-    border-color: rgba(85, 214, 122, .65);
-    box-shadow: 0 0 18px rgba(85, 214, 122, .08);
+    border-color: rgba(85,214,122,.65);
+    box-shadow: 0 0 18px rgba(85,214,122,.08);
 }
 
 .exit-button {
     color: #a77777;
-    border-color: rgba(170, 100, 100, .25);
+    border-color: rgba(170,100,100,.25);
 }
 
 .exit-button:hover {
     color: #d09090;
-    border-color: rgba(190, 110, 110, .55);
+    border-color: rgba(190,110,110,.55);
 }
-
-/* MODULE HOME */
 
 #moduleHome {
     display: none;
@@ -217,14 +209,14 @@ body::before {
 .modules-title {
     text-align: center;
     margin-bottom: 24px;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 4px;
     color: #586872;
 }
 
 .modules {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 16px;
 }
 
@@ -232,8 +224,8 @@ body::before {
     min-height: 155px;
     padding: 24px 22px;
     background:
-        linear-gradient(145deg, rgba(18, 25, 31, .92), rgba(7, 10, 14, .96));
-    border: 1px solid rgba(130, 155, 170, .16);
+        linear-gradient(145deg,rgba(18,25,31,.92),rgba(7,10,14,.96));
+    border: 1px solid rgba(130,155,170,.16);
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -247,31 +239,31 @@ body::before {
     top: 0;
     bottom: 0;
     width: 2px;
-    background: rgba(85, 214, 122, .28);
+    background: rgba(85,214,122,.28);
 }
 
 .module:hover {
     transform: translateY(-3px);
-    border-color: rgba(150, 180, 195, .32);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, .3);
+    border-color: rgba(150,180,195,.32);
+    box-shadow: 0 12px 35px rgba(0,0,0,.3);
 }
 
 .module-number {
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 3px;
     color: #566672;
     margin-bottom: 16px;
 }
 
 .module-name {
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: 3px;
     color: #b9c6ce;
     margin-bottom: 14px;
 }
 
 .module-status {
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 2px;
     color: #64737d;
 }
@@ -279,8 +271,6 @@ body::before {
 .module-status.ready {
     color: #55d67a;
 }
-
-/* PANELS */
 
 .module-panel {
     display: none;
@@ -294,11 +284,11 @@ body::before {
     justify-content: space-between;
     gap: 20px;
     padding-bottom: 15px;
-    border-bottom: 1px solid rgba(130, 155, 170, .14);
+    border-bottom: 1px solid rgba(130,155,170,.14);
 }
 
 .panel-title {
-    font-size: 15px;
+    font-size: 16px;
     letter-spacing: 4px;
     color: #c7d2d9;
 }
@@ -311,28 +301,26 @@ body::before {
 }
 
 .back-button {
-    border: 1px solid rgba(130, 155, 170, .18);
-    background: rgba(8, 12, 16, .82);
+    border: 1px solid rgba(130,155,170,.18);
+    background: rgba(8,12,16,.82);
     color: #81909a;
-    padding: 10px 16px;
-    font-size: 9px;
+    padding: 11px 17px;
+    font-size: 10px;
     letter-spacing: 2px;
     cursor: pointer;
 }
 
 .back-button:hover {
     color: #c6d0d6;
-    border-color: rgba(160, 185, 200, .35);
+    border-color: rgba(160,185,200,.35);
 }
-
-/* CALCULATOR */
 
 .calculator-panel {
     max-width: 760px;
     margin: 30px auto 0;
     padding: 28px;
-    background: rgba(8, 12, 16, .74);
-    border: 1px solid rgba(130, 155, 170, .14);
+    background: rgba(8,12,16,.74);
+    border: 1px solid rgba(130,155,170,.14);
 }
 
 .calc-intro {
@@ -341,7 +329,7 @@ body::before {
 }
 
 .calc-intro-title {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 4px;
     color: #55d67a;
     margin-bottom: 11px;
@@ -355,7 +343,7 @@ body::before {
 
 .calc-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2,1fr);
     gap: 18px;
 }
 
@@ -366,7 +354,7 @@ body::before {
 
 .calc-field label {
     margin-bottom: 9px;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 2px;
     color: #74838d;
 }
@@ -374,17 +362,17 @@ body::before {
 .calc-field input {
     width: 100%;
     padding: 14px 13px;
-    border: 1px solid rgba(130, 155, 170, .18);
+    border: 1px solid rgba(130,155,170,.18);
     outline: none;
-    background: rgba(3, 6, 9, .9);
+    background: rgba(3,6,9,.9);
     color: #d1dbe1;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial,Helvetica,sans-serif;
     font-size: 15px;
 }
 
 .calc-field input:focus {
-    border-color: rgba(85, 214, 122, .42);
-    box-shadow: 0 0 14px rgba(85, 214, 122, .05);
+    border-color: rgba(85,214,122,.42);
+    box-shadow: 0 0 14px rgba(85,214,122,.05);
 }
 
 .calc-field input::placeholder {
@@ -400,35 +388,29 @@ body::before {
 .calculate-button {
     min-width: 210px;
     padding: 14px 22px;
-    border: 1px solid rgba(85, 214, 122, .35);
-    background: rgba(10, 20, 15, .9);
+    border: 1px solid rgba(85,214,122,.35);
+    background: rgba(10,20,15,.9);
     color: #55d67a;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 3px;
     cursor: pointer;
-    transition: .2s ease;
-}
-
-.calculate-button:hover {
-    border-color: rgba(85, 214, 122, .7);
-    box-shadow: 0 0 20px rgba(85, 214, 122, .08);
 }
 
 .calc-results {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3,1fr);
     gap: 11px;
 }
 
 .result-box {
     padding: 20px 12px;
     text-align: center;
-    background: rgba(5, 9, 12, .85);
-    border: 1px solid rgba(130, 155, 170, .12);
+    background: rgba(5,9,12,.85);
+    border: 1px solid rgba(130,155,170,.12);
 }
 
 .result-label {
-    font-size: 8px;
+    font-size: 9px;
     letter-spacing: 2px;
     color: #596a75;
     margin-bottom: 11px;
@@ -455,8 +437,6 @@ body::before {
     color: #46545d;
 }
 
-/* REPLICATOR */
-
 .replicator-panel {
     max-width: 800px;
     margin: 30px auto 0;
@@ -466,10 +446,10 @@ body::before {
     text-align: center;
     margin-bottom: 18px;
     padding: 14px;
-    border: 1px solid rgba(85, 214, 122, .14);
-    background: rgba(8, 15, 11, .55);
+    border: 1px solid rgba(85,214,122,.14);
+    background: rgba(8,15,11,.55);
     color: #55d67a;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 3px;
 }
 
@@ -495,7 +475,7 @@ body::before {
     margin: 22px 0 9px;
     padding-bottom: 7px;
     border-bottom: 1px solid rgba(130,155,170,.12);
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 3px;
     color: #667781;
 }
@@ -507,7 +487,7 @@ body::before {
     align-items: center;
     padding: 13px 12px;
     margin-bottom: 5px;
-    background: rgba(9, 13, 17, .75);
+    background: rgba(9,13,17,.75);
     border: 1px solid rgba(130,155,170,.09);
     cursor: pointer;
     transition: .18s ease;
@@ -516,11 +496,11 @@ body::before {
 .food-item:hover,
 .food-item.active {
     border-color: rgba(85,214,122,.28);
-    background: rgba(12, 20, 16, .9);
+    background: rgba(12,20,16,.9);
 }
 
 .food-name {
-    font-size: 10px;
+    font-size: 11px;
     color: #aebbc3;
     letter-spacing: 1px;
 }
@@ -528,7 +508,7 @@ body::before {
 .food-temp,
 .food-time {
     text-align: right;
-    font-size: 9px;
+    font-size: 10px;
     color: #71818b;
     letter-spacing: 1px;
 }
@@ -543,9 +523,7 @@ body::before {
     margin-top: 28px;
 }
 
-/* MOBILE */
-
-@media (max-width: 700px) {
+@media (max-width:700px) {
 
     .app {
         width: 92vw;
@@ -593,7 +571,7 @@ body::before {
 }
 
 @keyframes pulse {
-    0%, 100% {
+    0%,100% {
         transform: scale(1);
         opacity: .45;
     }
@@ -635,6 +613,7 @@ body::before {
 
 <div class="app">
 
+```
 <div class="header">
     <h1>UMBRA</h1>
     <div class="subtitle">LIFE SUPPORT SYSTEM</div>
@@ -659,6 +638,7 @@ body::before {
         <button
             class="system-button start-button"
             id="startButton"
+            type="button"
         >
             START SYSTEM
         </button>
@@ -666,6 +646,7 @@ body::before {
         <button
             class="system-button exit-button"
             id="startupExitButton"
+            type="button"
         >
             EXIT
         </button>
@@ -683,57 +664,21 @@ body::before {
     <div class="modules">
 
         <div class="module" data-module="ac">
-
-            <div class="module-number">
-                MODULE 01
-            </div>
-
-            <div class="module-name">
-                AC CALCULATOR
-            </div>
-
-            <div class="module-status ready">
-                READY
-            </div>
-
+            <div class="module-number">MODULE 01</div>
+            <div class="module-name">AC CALCULATOR</div>
+            <div class="module-status ready">READY</div>
         </div>
 
-        <div
-            class="module"
-            data-module="radar"
-        >
-
-            <div class="module-number">
-                MODULE 02
-            </div>
-
-            <div class="module-name">
-                RADAR
-            </div>
-
-            <div class="module-status ready">
-                READY
-            </div>
-
+        <div class="module" data-module="radar">
+            <div class="module-number">MODULE 02</div>
+            <div class="module-name">RADAR</div>
+            <div class="module-status ready">READY</div>
         </div>
 
-        <div
-            class="module"
-            data-module="replicator"
-        >
-
-            <div class="module-number">
-                MODULE 03
-            </div>
-
-            <div class="module-name">
-                REPLICATOR
-            </div>
-
-            <div class="module-status ready">
-                READY
-            </div>
-
+        <div class="module" data-module="replicator">
+            <div class="module-number">MODULE 03</div>
+            <div class="module-name">REPLICATOR</div>
+            <div class="module-status ready">READY</div>
         </div>
 
     </div>
@@ -743,6 +688,7 @@ body::before {
         <button
             class="system-button exit-button"
             id="exitButton"
+            type="button"
         >
             EXIT SYSTEM
         </button>
@@ -751,18 +697,12 @@ body::before {
 
 </section>
 
-<section
-    class="module-panel"
-    id="panel-ac"
->
+<section class="module-panel" id="panel-ac">
 
     <div class="panel-header">
 
         <div>
-            <div class="panel-title">
-                AC CALCULATOR
-            </div>
-
+            <div class="panel-title">AC CALCULATOR</div>
             <div class="panel-code">
                 MODULE 01 · POWER COST ESTIMATE
             </div>
@@ -771,6 +711,7 @@ body::before {
         <button
             class="back-button"
             data-back
+            type="button"
         >
             BACK
         </button>
@@ -780,7 +721,6 @@ body::before {
     <div class="calculator-panel">
 
         <div class="calc-intro">
-
             <div class="calc-intro-title">
                 AIR CONDITIONING COST ESTIMATE
             </div>
@@ -788,17 +728,12 @@ body::before {
             <div class="calc-intro-text">
                 SIMPLE APPROXIMATE ELECTRICITY COST CALCULATION
             </div>
-
         </div>
 
         <div class="calc-grid">
 
             <div class="calc-field">
-
-                <label for="priceInput">
-                    PRICE / kWh
-                </label>
-
+                <label for="priceInput">PRICE / kWh</label>
                 <input
                     id="priceInput"
                     type="number"
@@ -806,15 +741,10 @@ body::before {
                     step="0.01"
                     value="0.35"
                 >
-
             </div>
 
             <div class="calc-field">
-
-                <label for="vaInput">
-                    AC VA
-                </label>
-
+                <label for="vaInput">AC VA</label>
                 <input
                     id="vaInput"
                     type="number"
@@ -822,15 +752,10 @@ body::before {
                     step="1"
                     value="1200"
                 >
-
             </div>
 
             <div class="calc-field">
-
-                <label for="hoursInput">
-                    ACTIVE HOURS / DAY
-                </label>
-
+                <label for="hoursInput">ACTIVE HOURS / DAY</label>
                 <input
                     id="hoursInput"
                     type="number"
@@ -839,15 +764,10 @@ body::before {
                     step="0.5"
                     value="8"
                 >
-
             </div>
 
             <div class="calc-field">
-
-                <label for="daysInput">
-                    DAYS
-                </label>
-
+                <label for="daysInput">DAYS</label>
                 <input
                     id="daysInput"
                     type="number"
@@ -855,7 +775,6 @@ body::before {
                     step="1"
                     value="30"
                 >
-
             </div>
 
         </div>
@@ -865,6 +784,7 @@ body::before {
             <button
                 class="calculate-button"
                 id="calculateButton"
+                type="button"
             >
                 CALCULATE
             </button>
@@ -874,4 +794,549 @@ body::before {
         <div class="calc-results">
 
             <div class="result-box">
+                <div class="result-label">DAILY CONSUMPTION</div>
+                <div class="result-value" id="dailyKwh">9.60</div>
+                <div class="result-unit">kWh / DAY</div>
+            </div>
 
+            <div class="result-box">
+                <div class="result-label">DAILY COST</div>
+                <div class="result-value" id="dailyCost">€3.36</div>
+                <div class="result-unit">PER DAY</div>
+            </div>
+
+            <div class="result-box">
+                <div class="result-label">TOTAL COST</div>
+                <div class="result-value" id="totalCost">€100.80</div>
+                <div class="result-unit">FOR PERIOD</div>
+            </div>
+
+        </div>
+
+        <div class="calculator-note">
+            APPROXIMATE GUIDE · ACTUAL CONSUMPTION MAY VARY
+        </div>
+
+    </div>
+
+</section>
+
+<section class="module-panel" id="panel-replicator">
+
+    <div class="panel-header">
+
+        <div>
+            <div class="panel-title">REPLICATOR</div>
+            <div class="panel-code">
+                MODULE 03 · AIR FRYER DATABASE
+            </div>
+        </div>
+
+        <button
+            class="back-button"
+            data-back
+            type="button"
+        >
+            BACK
+        </button>
+
+    </div>
+
+    <div class="replicator-panel">
+
+        <div class="replicator-status" id="replicatorStatus">
+            REPLICATOR READY · SELECT FOOD
+        </div>
+
+        <div class="food-list">
+
+            <div class="food-category">SNACKS</div>
+
+            <div class="food-item"
+                 data-name="Bratkartoffeln TK"
+                 data-temp="200 °C"
+                 data-time="25 min">
+                <div class="food-name">Bratkartoffeln TK</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">25 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Camembert TK"
+                 data-temp="180 °C"
+                 data-time="8–10 min">
+                <div class="food-name">Camembert TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">8–10 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Frühlingsrollen TK"
+                 data-temp="200 °C"
+                 data-time="8–10 min">
+                <div class="food-name">Frühlingsrollen TK</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">8–10 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Mini Berliner TK"
+                 data-temp="160 °C"
+                 data-time="6–8 min">
+                <div class="food-name">Mini Berliner TK</div>
+                <div class="food-temp">160 °C</div>
+                <div class="food-time">6–8 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Mozzarella Sticks"
+                 data-temp="200 °C"
+                 data-time="8 min">
+                <div class="food-name">Mozzarella Sticks</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">8 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Pizzabaguettes TK"
+                 data-temp="180 °C"
+                 data-time="10–12 min">
+                <div class="food-name">Pizzabaguettes TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">10–12 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Onionrings TK"
+                 data-temp="200 °C"
+                 data-time="10–12 min">
+                <div class="food-name">Onionrings TK</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">10–12 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Kartoffelwedges"
+                 data-temp="180 °C"
+                 data-time="35–40 min">
+                <div class="food-name">Kartoffelwedges</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">35–40 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Kartoffelwedges TK"
+                 data-temp="180 °C"
+                 data-time="18–20 min">
+                <div class="food-name">Kartoffelwedges TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">18–20 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Knusperkroketten TK"
+                 data-temp="180 °C"
+                 data-time="12–15 min">
+                <div class="food-name">Knusperkroketten TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">12–15 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Pommes selbstgemacht"
+                 data-temp="180 °C"
+                 data-time="35–40 min">
+                <div class="food-name">Pommes selbstgemacht</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">35–40 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Pommes TK"
+                 data-temp="180 °C"
+                 data-time="20–25 min">
+                <div class="food-name">Pommes TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">20–25 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Süßkartoffeln halbiert"
+                 data-temp="180 °C"
+                 data-time="15–20 min">
+                <div class="food-name">Süßkartoffeln halbiert</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">15–20 min</div>
+            </div>
+
+            <div class="food-category">GEMÜSE &amp; BEILAGEN</div>
+
+            <div class="food-item"
+                 data-name="Brokkoliröschen"
+                 data-temp="180 °C"
+                 data-time="8–10 min">
+                <div class="food-name">Brokkoliröschen</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">8–10 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Blumenkohlscheibe"
+                 data-temp="190 °C"
+                 data-time="12–15 min">
+                <div class="food-name">Blumenkohlscheibe</div>
+                <div class="food-temp">190 °C</div>
+                <div class="food-time">12–15 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Champignons"
+                 data-temp="200 °C"
+                 data-time="18–22 min">
+                <div class="food-name">Champignons</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">18–22 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Gemüsepuffer TK"
+                 data-temp="180 °C"
+                 data-time="12–15 min">
+                <div class="food-name">Gemüsepuffer TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">12–15 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Grillgemüse"
+                 data-temp="190 °C"
+                 data-time="12–15 min">
+                <div class="food-name">Grillgemüse</div>
+                <div class="food-temp">190 °C</div>
+                <div class="food-time">12–15 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Maiskolben"
+                 data-temp="180 °C"
+                 data-time="12–16 min">
+                <div class="food-name">Maiskolben</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">12–16 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Pak Choi mariniert"
+                 data-temp="200 °C"
+                 data-time="6–8 min">
+                <div class="food-name">Pak Choi mariniert</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">6–8 min</div>
+            </div>
+
+            <div class="food-category">BROT &amp; FRÜHSTÜCK</div>
+
+            <div class="food-item"
+                 data-name="Aufbackbrötchen"
+                 data-temp="160 °C"
+                 data-time="8–10 min">
+                <div class="food-name">Aufbackbrötchen</div>
+                <div class="food-temp">160 °C</div>
+                <div class="food-time">8–10 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Blätterteigteilchen"
+                 data-temp="180 °C"
+                 data-time="8–12 min">
+                <div class="food-name">Blätterteigteilchen</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">8–12 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Brötchen vom Vortag"
+                 data-temp="180 °C"
+                 data-time="4–6 min">
+                <div class="food-name">Brötchen vom Vortag</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">4–6 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Croissants"
+                 data-temp="180 °C"
+                 data-time="12 min">
+                <div class="food-name">Croissants</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">12 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Ei weich"
+                 data-temp="180 °C"
+                 data-time="7 min">
+                <div class="food-name">Ei weich</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">7 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Ei mittel"
+                 data-temp="180 °C"
+                 data-time="8 min">
+                <div class="food-name">Ei mittel</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">8 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Ei hart"
+                 data-temp="180 °C"
+                 data-time="9 min">
+                <div class="food-name">Ei hart</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">9 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Laugenbrezeln TK"
+                 data-temp="180 °C"
+                 data-time="8–10 min">
+                <div class="food-name">Laugenbrezeln TK</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">8–10 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Omelette"
+                 data-temp="180 °C"
+                 data-time="10–12 min">
+                <div class="food-name">Omelette</div>
+                <div class="food-temp">180 °C</div>
+                <div class="food-time">10–12 min</div>
+            </div>
+
+            <div class="food-item"
+                 data-name="Spiegeleier"
+                 data-temp="200 °C"
+                 data-time="10 min">
+                <div class="food-name">Spiegeleier</div>
+                <div class="food-temp">200 °C</div>
+                <div class="food-time">10 min</div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+```
+
+</div>
+
+<script>
+const keySound = new Audio("key1.mp3");
+const introSound = new Audio("intro.mp3");
+const outroSound = new Audio("outro.mp3");
+
+keySound.volume = 0.35;
+introSound.volume = 0.55;
+outroSound.volume = 0.55;
+
+keySound.preload = "auto";
+introSound.preload = "auto";
+outroSound.preload = "auto";
+
+const startupControls = document.getElementById("startupControls");
+const startButton = document.getElementById("startButton");
+const startupExitButton = document.getElementById("startupExitButton");
+const exitButton = document.getElementById("exitButton");
+const moduleHome = document.getElementById("moduleHome");
+
+const panels = document.querySelectorAll(".module-panel");
+const modules = document.querySelectorAll(".module");
+const backButtons = document.querySelectorAll("[data-back]");
+
+function playKey() {
+    keySound.currentTime = 0;
+    keySound.play().catch(() => {});
+}
+
+function showStartScreen() {
+    startupControls.style.display = "flex";
+    moduleHome.style.display = "none";
+
+    panels.forEach(panel => {
+        panel.style.display = "none";
+    });
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function startSystem() {
+    playKey();
+
+    startupControls.style.display = "none";
+    moduleHome.style.display = "block";
+    moduleHome.classList.remove("modules-reveal");
+
+    void moduleHome.offsetWidth;
+
+    moduleHome.classList.add("modules-reveal");
+
+    setTimeout(() => {
+        introSound.currentTime = 0;
+        introSound.play().catch(() => {});
+    }, 220);
+}
+
+function exitSystem() {
+    playKey();
+
+    outroSound.currentTime = 0;
+    outroSound.play().catch(() => {});
+
+    moduleHome.style.display = "none";
+
+    panels.forEach(panel => {
+        panel.style.display = "none";
+    });
+
+    setTimeout(() => {
+        showStartScreen();
+    }, 700);
+}
+
+function openModule(moduleName) {
+
+    playKey();
+
+    if (moduleName === "radar") {
+        window.location.href = "radar.html";
+        return;
+    }
+
+    moduleHome.style.display = "none";
+
+    panels.forEach(panel => {
+        panel.style.display = "none";
+    });
+
+    const selectedPanel = document.getElementById("panel-" + moduleName);
+
+    if (selectedPanel) {
+        selectedPanel.style.display = "block";
+        window.scrollTo({
+            top: selectedPanel.offsetTop - 25,
+            behavior: "smooth"
+        });
+    }
+}
+
+function closeModulePanels() {
+
+    panels.forEach(panel => {
+        panel.style.display = "none";
+    });
+
+    moduleHome.style.display = "block";
+
+    window.scrollTo({
+        top: moduleHome.offsetTop - 25,
+        behavior: "smooth"
+    });
+}
+
+startButton.addEventListener("click", startSystem);
+
+startupExitButton.addEventListener("click", exitSystem);
+
+exitButton.addEventListener("click", exitSystem);
+
+modules.forEach(module => {
+    module.addEventListener("click", () => {
+        openModule(module.dataset.module);
+    });
+});
+
+backButtons.forEach(button => {
+    button.addEventListener("click", () => {
+        playKey();
+        closeModulePanels();
+    });
+});
+
+document.getElementById("calculateButton").addEventListener("click", () => {
+
+    playKey();
+
+    const price = parseFloat(
+        document.getElementById("priceInput").value
+    );
+
+    const va = parseFloat(
+        document.getElementById("vaInput").value
+    );
+
+    const hours = parseFloat(
+        document.getElementById("hoursInput").value
+    );
+
+    const days = parseFloat(
+        document.getElementById("daysInput").value
+    );
+
+    if (
+        !Number.isFinite(price) ||
+        !Number.isFinite(va) ||
+        !Number.isFinite(hours) ||
+        !Number.isFinite(days)
+    ) {
+        return;
+    }
+
+    const dailyKwh = (va / 1000) * hours;
+    const dailyCost = dailyKwh * price;
+    const totalCost = dailyCost * days;
+
+    document.getElementById("dailyKwh").textContent =
+        dailyKwh.toFixed(2);
+
+    document.getElementById("dailyCost").textContent =
+        "€" + dailyCost.toFixed(2);
+
+    document.getElementById("totalCost").textContent =
+        "€" + totalCost.toFixed(2);
+});
+
+document.querySelectorAll(".food-item").forEach(item => {
+
+    item.addEventListener("click", () => {
+
+        playKey();
+
+        document.querySelectorAll(".food-item").forEach(other => {
+            other.classList.remove("active");
+        });
+
+        item.classList.add("active");
+
+        const name = item.dataset.name;
+        const temp = item.dataset.temp;
+        const time = item.dataset.time;
+
+        document.getElementById("replicatorStatus").textContent =
+            "READY · " + name.toUpperCase() +
+            " · " + temp +
+            " · " + time;
+    });
+});
+
+showStartScreen();
+</script>
+
+</body>
+</html>

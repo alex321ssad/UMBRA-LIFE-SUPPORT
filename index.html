@@ -1,431 +1,394 @@
+
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>UMBRA GENETICS — BIOLOGICAL THREAT DETECTION SYSTEM</title>
-<style>
-    * { box-sizing: border-box; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    html, body {
-        margin: 0;
-        width: 100%;
-        height: 100%;
-        background: #020402;
-        color: #00ff55;
-        font-family: "Courier New", monospace;
-        overflow: hidden;
-    }
+    <title>UMBRA LIFE SUPPORT</title>
 
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background:
-            radial-gradient(circle at center, rgba(0,255,80,.035), transparent 55%),
-            #020402;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .umbra {
-        width: min(96vw, 900px);
-        height: min(96vh, 900px);
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+        html, body {
+            width: 100%;
+            min-height: 100%;
+        }
 
-    .header {
-        border: 1px solid #00aa38;
-        box-shadow: 0 0 12px rgba(0,255,70,.15);
-        padding: 9px 12px;
-        background: rgba(0,20,5,.7);
-    }
+        body {
+            background:
+                radial-gradient(circle at 50% 35%, #18202b 0%, #0b0f14 42%, #05070a 100%);
+            color: #d8dee7;
+            font-family: "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
+        }
 
-    .title {
-        font-size: clamp(14px, 2vw, 21px);
-        letter-spacing: 2px;
-        font-weight: bold;
-        text-shadow: 0 0 8px rgba(0,255,70,.6);
-    }
+        /* subtle background grid */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.12;
 
-    .subtitle {
-        margin-top: 4px;
-        font-size: 10px;
-        color: #5dcc78;
-        letter-spacing: 1px;
-    }
+            background-image:
+                linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
 
-    .radar-wrap {
-        position: relative;
-        flex: 1;
-        min-height: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px solid #006f29;
-        background: #010301;
-        box-shadow: inset 0 0 35px rgba(0,255,70,.05);
-        overflow: hidden;
-    }
+            background-size: 50px 50px;
+        }
 
-    canvas {
-        display: block;
-        width: min(82vh, 82vw, 700px);
-        height: min(82vh, 82vw, 700px);
-        max-width: 100%;
-        max-height: 100%;
-    }
+        .app {
+            position: relative;
+            z-index: 1;
 
-    .status {
-        position: absolute;
-        left: 12px;
-        top: 10px;
-        font-size: 11px;
-        line-height: 1.5;
-        color: #6cff8e;
-        pointer-events: none;
-        text-shadow: 0 0 5px #00ff44;
-    }
+            width: min(1100px, 92%);
+            margin: 0 auto;
+            padding: 70px 0 60px;
+        }
 
-    .controls {
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-        align-items: center;
-        border: 1px solid #006f29;
-        padding: 8px 10px;
-        background: rgba(0,20,5,.7);
-        font-size: 10px;
-        color: #55c96f;
-    }
+        /* HEADER */
 
-    button {
-        font-family: inherit;
-        font-weight: bold;
-        color: #00ff55;
-        background: #031006;
-        border: 1px solid #00aa38;
-        padding: 7px 12px;
-        cursor: pointer;
-        letter-spacing: 1px;
-    }
+        .header {
+            text-align: center;
+            margin-bottom: 55px;
+        }
 
-    button:hover {
-        background: #06200c;
-        box-shadow: 0 0 10px rgba(0,255,70,.25);
-    }
+        .eyebrow {
+            font-size: 12px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #718092;
+            margin-bottom: 16px;
+        }
 
-    .scanline {
-        position: fixed;
-        inset: 0;
-        pointer-events: none;
-        z-index: 20;
-        background: linear-gradient(
-            to bottom,
-            transparent 0%,
-            rgba(0,255,70,.018) 50%,
-            transparent 51%
-        );
-        background-size: 100% 4px;
-        mix-blend-mode: screen;
-    }
+        h1 {
+            font-size: clamp(38px, 7vw, 72px);
+            font-weight: 300;
+            letter-spacing: 8px;
+            color: #f0f3f7;
+            text-shadow: 0 0 30px rgba(130, 170, 220, 0.18);
+        }
 
-    @media (max-width: 600px) {
-        .umbra { width: 98vw; height: 98vh; }
-        .controls { font-size: 9px; }
-    }
-</style>
+        .subtitle {
+            margin-top: 18px;
+            font-size: 13px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #667382;
+        }
+
+        /* CENTRAL SYSTEM */
+
+        .system-core {
+            width: 240px;
+            height: 240px;
+            margin: 0 auto 65px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background:
+                radial-gradient(circle,
+                    rgba(110, 145, 180, 0.24) 0%,
+                    rgba(50, 70, 90, 0.08) 38%,
+                    transparent 70%);
+
+            border: 1px solid rgba(130, 160, 190, 0.18);
+
+            box-shadow:
+                0 0 35px rgba(100, 140, 180, 0.08),
+                inset 0 0 45px rgba(100, 140, 180, 0.05);
+
+            position: relative;
+        }
+
+        .system-core::before {
+            content: "";
+            position: absolute;
+            width: 155px;
+            height: 155px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(150, 180, 210, 0.20);
+
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .system-core::after {
+            content: "";
+            position: absolute;
+            width: 90px;
+            height: 90px;
+
+            border-radius: 50%;
+
+            border: 1px solid rgba(180, 200, 220, 0.28);
+            box-shadow:
+                0 0 25px rgba(120, 160, 200, 0.12);
+
+            animation: rotate 18s linear infinite;
+        }
+
+        .core-label {
+            position: relative;
+            z-index: 2;
+
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #aeb9c5;
+        }
+
+        .core-status {
+            margin-top: 8px;
+            color: #7f9aaf;
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(0.94);
+                opacity: 0.55;
+            }
+
+            50% {
+                transform: scale(1.04);
+                opacity: 1;
+            }
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* MODULES */
+
+        .section-title {
+            text-align: center;
+            font-size: 11px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #596675;
+            margin-bottom: 24px;
+        }
+
+        .modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .module {
+            min-height: 145px;
+            padding: 25px;
+
+            background: rgba(13, 18, 24, 0.72);
+            border: 1px solid rgba(150, 170, 190, 0.12);
+            border-radius: 10px;
+
+            transition:
+                transform 0.25s ease,
+                border-color 0.25s ease,
+                background 0.25s ease;
+
+            cursor: pointer;
+        }
+
+        .module:hover {
+            transform: translateY(-3px);
+            border-color: rgba(150, 180, 210, 0.28);
+            background: rgba(20, 27, 35, 0.85);
+        }
+
+        .module-number {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #566575;
+            margin-bottom: 20px;
+        }
+
+        .module h2 {
+            font-size: 20px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: #dfe5eb;
+            margin-bottom: 10px;
+        }
+
+        .module p {
+            font-size: 12px;
+            line-height: 1.6;
+            color: #697685;
+        }
+
+        .module.disabled {
+            opacity: 0.48;
+            cursor: default;
+        }
+
+        .module.disabled:hover {
+            transform: none;
+            border-color: rgba(150, 170, 190, 0.12);
+            background: rgba(13, 18, 24, 0.72);
+        }
+
+        /* FOOTER */
+
+        footer {
+            margin-top: 65px;
+            text-align: center;
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #3f4b57;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .app {
+                padding-top: 45px;
+            }
+
+            h1 {
+                letter-spacing: 5px;
+            }
+
+            .system-core {
+                width: 200px;
+                height: 200px;
+            }
+
+            .modules {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="umbra">
-    <div class="header">
-        <div class="title">UMBRA GENETICS // BIOLOGICAL THREAT DETECTION SYSTEM</div>
-        <div class="subtitle">RADAR SUBSYSTEM // SIMULATION MODE // V0.2</div>
-    </div>
+    <main class="app">
 
-    <div class="radar-wrap">
-        <canvas id="radarCanvas" width="700" height="700"></canvas>
+        <header class="header">
 
-        <div class="status">
-            SYSTEM ........ ONLINE<br>
-            RADAR ......... ACTIVE<br>
-            SWEEP ......... <span id="angleReadout">000°</span><br>
-            CONTACTS ...... <span id="contactReadout">0</span>
-        </div>
-    </div>
+            <div class="eyebrow">
+                Personal Utility System
+            </div>
 
-    <div class="controls">
-        <span>UMBRA // SENSOR ARRAY A-01</span>
-        <button id="soundButton">🔊 SOUND OFF</button>
-    </div>
-</div>
+            <h1>
+                UMBRA
+            </h1>
 
-<div class="scanline"></div>
+            <div class="subtitle">
+                Life Support
+            </div>
 
-<script>
-"use strict";
+        </header>
 
-const canvas = document.getElementById("radarCanvas");
-const ctx = canvas.getContext("2d");
 
-const angleReadout = document.getElementById("angleReadout");
-const contactReadout = document.getElementById("contactReadout");
-const soundButton = document.getElementById("soundButton");
+        <section class="system-core">
 
-const SIZE = canvas.width;
-const centerX = SIZE / 2;
-const centerY = SIZE / 2;
-const radius = SIZE * 0.43;
+            <div class="core-label">
 
-let radarAngle = 0;
-const radarSpeed = 0.012;
-const blips = [];
-const maxBlips = 5;
+                SYSTEM
 
-let audioCtx = null;
-let soundEnabled = false;
+                <div class="core-status">
+                    ONLINE
+                </div>
 
-function initAudio() {
-    if (!audioCtx) {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
+            </div>
 
-    if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-    }
+        </section>
 
-    soundEnabled = !soundEnabled;
-    soundButton.textContent = soundEnabled ? "🔊 SOUND ON" : "🔇 SOUND OFF";
-}
 
-soundButton.addEventListener("click", initAudio);
+        <section>
 
-function playPing(volume = 0.45) {
-    if (!soundEnabled || !audioCtx) return;
+            <div class="section-title">
+                Modules
+            </div>
 
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
+            <div class="modules">
 
-    osc.type = "sine";
-    osc.frequency.setValueAtTime(900, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(
-        320,
-        audioCtx.currentTime + 0.55
-    );
+                <div class="module">
 
-    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(
-        volume,
-        audioCtx.currentTime + 0.015
-    );
-    gain.gain.exponentialRampToValueAtTime(
-        0.0001,
-        audioCtx.currentTime + 0.8
-    );
+                    <div class="module-number">
+                        MODULE 01
+                    </div>
 
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+                    <h2>
+                        AC CALCULATOR
+                    </h2>
 
-    osc.start();
-    osc.stop(audioCtx.currentTime + 0.85);
-}
+                    <p>
+                        Air conditioning calculations and useful climate utilities.
+                    </p>
 
-function createBlip() {
-    const angle = Math.random() * Math.PI * 2;
-    const distance = Math.random() * (radius - 55) + 35;
+                </div>
 
-    return {
-        x: centerX + Math.cos(angle) * distance,
-        y: centerY + Math.sin(angle) * distance,
-        angle,
-        distance,
-        intensity: 0,
-        detected: false,
-        life: Math.random() * 0.8 + 0.5
-    };
-}
 
-function seedBlips() {
-    blips.length = 0;
+                <div class="module disabled">
 
-    for (let i = 0; i < maxBlips; i++) {
-        blips.push(createBlip());
-    }
-}
+                    <div class="module-number">
+                        MODULE 02
+                    </div>
 
-function drawGrid() {
-    ctx.save();
+                    <h2>
+                        RESERVED
+                    </h2>
 
-    ctx.strokeStyle = "rgba(0, 255, 70, 0.22)";
-    ctx.lineWidth = 1;
+                    <p>
+                        Future utility module.
+                    </p>
 
-    for (let i = 1; i <= 4; i++) {
-        ctx.beginPath();
-        ctx.arc(
-            centerX,
-            centerY,
-            radius * (i / 4),
-            0,
-            Math.PI * 2
-        );
-        ctx.stroke();
-    }
+                </div>
 
-    ctx.beginPath();
-    ctx.moveTo(centerX - radius, centerY);
-    ctx.lineTo(centerX + radius, centerY);
-    ctx.moveTo(centerX, centerY - radius);
-    ctx.lineTo(centerX, centerY + radius);
-    ctx.stroke();
 
-    ctx.strokeStyle = "rgba(0, 255, 70, 0.45)";
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.stroke();
+                <div class="module disabled">
 
-    ctx.restore();
-}
+                    <div class="module-number">
+                        MODULE 03
+                    </div>
 
-function drawSweep() {
-    const x = centerX + Math.cos(radarAngle) * radius;
-    const y = centerY + Math.sin(radarAngle) * radius;
+                    <h2>
+                        RESERVED
+                    </h2>
 
-    const gradient = ctx.createLinearGradient(
-        centerX, centerY, x, y
-    );
+                    <p>
+                        Future utility module.
+                    </p>
 
-    gradient.addColorStop(0, "rgba(0,255,70,0.02)");
-    gradient.addColorStop(0.7, "rgba(0,255,70,0.10)");
-    gradient.addColorStop(1, "rgba(0,255,70,0.75)");
+                </div>
 
-    ctx.save();
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = 2;
-    ctx.shadowBlur = 12;
-    ctx.shadowColor = "#00ff44";
+            </div>
 
-    ctx.beginPath();
-    ctx.moveTo(centerX, centerY);
-    ctx.lineTo(x, y);
-    ctx.stroke();
+        </section>
 
-    ctx.restore();
-}
 
-function angleDifference(a, b) {
-    let diff = Math.abs(a - b);
-    if (diff > Math.PI) diff = Math.PI * 2 - diff;
-    return diff;
-}
+        <footer>
+            UMBRA LIFE SUPPORT · SYSTEM ONLINE
+        </footer>
 
-function drawBlip(blip) {
-    if (blip.intensity <= 0) return;
-
-    ctx.save();
-
-    // Pulse-Modul:
-    // Jeder Kontakt bekommt eine sanfte, zeitbasierte Pulsation.
-    // Noch keine Kontakt-Datenbank – die Werte sind bewusst neutral.
-    const pulseSpeed = 0.003;
-    const pulseIntensity = 1.2;
-    const pulseValue = Math.sin(Date.now() * pulseSpeed);
-
-    const dynamicSize = Math.max(
-        1,
-        3 + blip.intensity * 3 + pulseValue * pulseIntensity
-    );
-
-    const dynamicGlow = Math.max(
-        4,
-        8 + blip.intensity * 18 + pulseValue * 5
-    );
-
-    ctx.shadowBlur = dynamicGlow;
-    ctx.shadowColor = "#00ff44";
-    ctx.fillStyle = "#00ff55";
-
-    ctx.beginPath();
-    ctx.arc(
-        blip.x,
-        blip.y,
-        dynamicSize,
-        0,
-        Math.PI * 2
-    );
-    ctx.fill();
-
-    ctx.globalAlpha = blip.intensity * 0.25;
-    ctx.beginPath();
-    ctx.arc(
-        blip.x,
-        blip.y,
-        10 + blip.intensity * 14 + pulseValue * 3,
-        0,
-        Math.PI * 2
-    );
-    ctx.fill();
-
-    ctx.restore();
-}
-
-function animate() {
-    // Fade the previous frame to create the radar trail.
-    ctx.fillStyle = "rgba(0, 5, 1, 0.12)";
-    ctx.fillRect(0, 0, SIZE, SIZE);
-
-    drawGrid();
-    drawSweep();
-
-    for (let i = 0; i < blips.length; i++) {
-        const blip = blips[i];
-
-        const dx = blip.x - centerX;
-        const dy = blip.y - centerY;
-        blip.angle = Math.atan2(dy, dx);
-
-        const diff = angleDifference(radarAngle, blip.angle);
-
-        if (diff < 0.035 && !blip.detected) {
-            blip.detected = true;
-            blip.intensity = 1;
-            playPing();
-        }
-
-        if (diff > 0.12) {
-            blip.detected = false;
-        }
-
-        if (blip.intensity > 0) {
-            drawBlip(blip);
-            blip.intensity -= 0.018;
-        }
-    }
-
-    while (blips.length < maxBlips) {
-        blips.push(createBlip());
-    }
-
-    radarAngle += radarSpeed;
-
-    if (radarAngle > Math.PI * 2) {
-        radarAngle -= Math.PI * 2;
-    }
-
-    const degrees =
-        Math.round((radarAngle * 180 / Math.PI + 360) % 360);
-
-    angleReadout.textContent =
-        String(degrees).padStart(3, "0") + "°";
-
-    contactReadout.textContent = blips.length;
-
-    requestAnimationFrame(animate);
-}
-
-seedBlips();
-animate();
-</script>
+    </main>
 
 </body>
 </html>
+

@@ -168,6 +168,76 @@
             text-shadow: 0 0 8px rgba(85, 214, 122, 0.25);
         }
 
+        /* START / EXIT */
+
+        .system-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 28px;
+        }
+
+        .system-button {
+            border: 1px solid rgba(160, 180, 200, 0.25);
+            background: rgba(8, 12, 17, 0.82);
+            color: #aebbc7;
+
+            padding: 13px 24px;
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 9px;
+            letter-spacing: 3px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.25s ease,
+                border-color 0.25s ease,
+                color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .system-button:hover {
+            background: rgba(30, 45, 52, 0.82);
+            border-color: rgba(85, 214, 122, 0.35);
+            color: #dce5ea;
+            box-shadow: 0 0 18px rgba(85, 214, 122, 0.08);
+        }
+
+        .system-button.start {
+            color: #55d67a;
+            border-color: rgba(85, 214, 122, 0.28);
+        }
+
+        .system-button.exit {
+            color: #8fa0af;
+            margin-top: 35px;
+        }
+
+        .system-button.exit:hover {
+            border-color: rgba(180, 200, 215, 0.35);
+        }
+
+        /* BOOT SCREEN */
+
+        .boot-screen {
+            text-align: center;
+            margin-top: -15px;
+            margin-bottom: 45px;
+        }
+
+        .boot-status {
+            font-size: 9px;
+            letter-spacing: 4px;
+            color: #657585;
+            min-height: 18px;
+            transition: opacity 0.25s ease;
+        }
+
+        .boot-screen.hidden {
+            display: none;
+        }
+
         /* MODULES */
 
         .modules-title {
@@ -196,7 +266,8 @@
             transition:
                 border-color 0.25s ease,
                 transform 0.25s ease,
-                background 0.25s ease;
+                background 0.25s ease,
+                opacity 0.35s ease;
 
             overflow: hidden;
 
@@ -247,6 +318,28 @@
             font-size: 8px;
             letter-spacing: 2px;
             color: #55d67a;
+        }
+
+        .modules.booting .module {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        .modules.online .module {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .modules.online .module:nth-child(1) {
+            transition-delay: 0.10s;
+        }
+
+        .modules.online .module:nth-child(2) {
+            transition-delay: 0.22s;
+        }
+
+        .modules.online .module:nth-child(3) {
+            transition-delay: 0.34s;
         }
 
         /* MODULE PANEL */
@@ -465,6 +558,29 @@
             color: #566574;
         }
 
+        /* OFFLINE */
+
+        body.offline .online {
+            color: #657585;
+            text-shadow: none;
+        }
+
+        body.offline .system-status::after {
+            content: " · OFFLINE";
+        }
+
+        body.offline .system-status {
+            color: #657585;
+        }
+
+        body.offline .system-button.start {
+            display: inline-block;
+        }
+
+        body.system-running .system-button.start {
+            display: none;
+        }
+
         /* ANIMATIONS */
 
         @keyframes rotateRing {
@@ -610,7 +726,7 @@
     </style>
 </head>
 
-<body>
+<body class="offline">
 
 <div class="app">
 
@@ -652,7 +768,7 @@
                 </div>
 
                 <div class="online">
-                    ONLINE
+                    OFFLINE
                 </div>
 
             </div>
@@ -662,15 +778,49 @@
     </section>
 
 
+    <!-- SYSTEM START -->
+
+    <section
+        class="boot-screen"
+        id="bootScreen"
+    >
+
+        <div
+            class="boot-status"
+            id="bootStatus"
+        >
+            SYSTEM STANDBY
+        </div>
+
+        <div class="system-controls">
+
+            <button
+                class="system-button start"
+                id="startButton"
+            >
+                START SYSTEM
+            </button>
+
+        </div>
+
+    </section>
+
+
     <!-- MODULES HOME -->
 
-    <section id="moduleHome">
+    <section
+        id="moduleHome"
+        style="display:none;"
+    >
 
         <div class="modules-title">
             Modules
         </div>
 
-        <section class="modules">
+        <section
+            class="modules booting"
+            id="modules"
+        >
 
 
             <!-- MODULE 01 -->
@@ -1387,10 +1537,28 @@
     </section>
 
 
+    <!-- EXIT -->
+
+    <div
+        class="system-controls"
+        id="exitControl"
+        style="display:none;"
+    >
+
+        <button
+            class="system-button exit"
+            id="exitButton"
+        >
+            EXIT SYSTEM
+        </button>
+
+    </div>
+
+
     <!-- FOOTER -->
 
     <footer>
-        UMBRA LIFE SUPPORT · SYSTEM ONLINE
+        UMBRA LIFE SUPPORT · SYSTEM OFFLINE
     </footer>
 
 </div>
@@ -1399,36 +1567,211 @@
 <script>
 
     /* =========================================
-       UMBRA SOUND
+       UMBRA SOUND SYSTEM
     ========================================= */
 
+    const introSound = new Audio("intro.mp3");
+    const outroSound = new Audio("outro.mp3");
     const keySound = new Audio("key1.mp3");
 
+    introSound.volume = 0.65;
+    outroSound.volume = 0.65;
     keySound.volume = 0.35;
 
 
-    function playKeySound() {
+    function playSound(sound) {
 
         try {
 
-            keySound.currentTime = 0;
-            keySound.play();
+            sound.currentTime = 0;
+
+            const promise = sound.play();
+
+            if (promise !== undefined) {
+
+                promise.catch(() => {
+                    /* Browser may block optional sound */
+                });
+
+            }
 
         } catch (error) {
-
             /* Sound remains optional */
-
         }
 
     }
 
 
+    function playKeySound() {
+        playSound(keySound);
+    }
+
+
     /* =========================================
-       MODULE NAVIGATION
+       SYSTEM START
     ========================================= */
+
+    const startButton =
+        document.getElementById("startButton");
+
+    const exitButton =
+        document.getElementById("exitButton");
+
+    const bootStatus =
+        document.getElementById("bootStatus");
+
+    const bootScreen =
+        document.getElementById("bootScreen");
 
     const moduleHome =
         document.getElementById("moduleHome");
+
+    const modulesContainer =
+        document.getElementById("modules");
+
+    const exitControl =
+        document.getElementById("exitControl");
+
+
+    let systemRunning = false;
+
+
+    function startSystem() {
+
+        if (systemRunning) {
+            return;
+        }
+
+        systemRunning = true;
+
+        document.body.classList.remove("offline");
+        document.body.classList.add("system-running");
+
+        playKeySound();
+
+        bootStatus.textContent = "INITIALIZING UMBRA";
+
+        startButton.disabled = true;
+
+        /*
+         * Modules appear first.
+         */
+
+        setTimeout(() => {
+
+            moduleHome.style.display = "block";
+
+            requestAnimationFrame(() => {
+                modulesContainer.classList.add("online");
+            });
+
+            bootStatus.textContent = "SYSTEM MODULES ONLINE";
+
+        }, 500);
+
+
+        /*
+         * Intro starts AFTER the modules appear.
+         */
+
+        setTimeout(() => {
+
+            playSound(introSound);
+
+            bootStatus.textContent = "SYSTEM ONLINE";
+
+            exitControl.style.display = "flex";
+
+        }, 1050);
+
+
+        /*
+         * Boot controls disappear after startup.
+         */
+
+        setTimeout(() => {
+
+            bootScreen.classList.add("hidden");
+
+        }, 1800);
+
+    }
+
+
+    /* =========================================
+       SYSTEM EXIT
+    ========================================= */
+
+    function exitSystem() {
+
+        if (!systemRunning) {
+            return;
+        }
+
+        playKeySound();
+
+        /*
+         * Close any open module.
+         */
+
+        modulePanels.forEach(panel => {
+            panel.classList.remove("active");
+        });
+
+
+        /*
+         * Play outro while system shuts down.
+         */
+
+        playSound(outroSound);
+
+        bootStatus.textContent = "SYSTEM SHUTDOWN";
+
+
+        setTimeout(() => {
+
+            modulesContainer.classList.remove("online");
+
+            moduleHome.style.display = "none";
+
+            exitControl.style.display = "none";
+
+            bootScreen.classList.remove("hidden");
+
+            startButton.disabled = false;
+
+            bootStatus.textContent = "SYSTEM STANDBY";
+
+            document.body.classList.remove("system-running");
+            document.body.classList.add("offline");
+
+            systemRunning = false;
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }, 900);
+
+    }
+
+
+    startButton.addEventListener(
+        "click",
+        startSystem
+    );
+
+
+    exitButton.addEventListener(
+        "click",
+        exitSystem
+    );
+
+
+    /* =========================================
+       MODULE NAVIGATION
+    ========================================= */
 
     const modulePanels =
         document.querySelectorAll(".module-panel");
@@ -1438,6 +1781,10 @@
 
 
     function openModule(moduleName) {
+
+        if (!systemRunning) {
+            return;
+        }
 
         playKeySound();
 

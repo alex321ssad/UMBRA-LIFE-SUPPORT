@@ -8,6 +8,7 @@
     <title>UMBRA LIFE SUPPORT</title>
 
     <style>
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -198,6 +199,8 @@
                 background 0.25s ease;
 
             overflow: hidden;
+
+            cursor: pointer;
         }
 
         .module::before {
@@ -237,29 +240,83 @@
             color: #7e8d9c;
         }
 
+        .module-status {
+            position: absolute;
+            right: 20px;
+            bottom: 18px;
+            font-size: 8px;
+            letter-spacing: 2px;
+            color: #55d67a;
+        }
+
+        /* MODULE PANEL */
+
+        .module-panel {
+            display: none;
+            animation: panelIn 0.28s ease-out;
+        }
+
+        .module-panel.active {
+            display: block;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+
+            border-bottom: 1px solid rgba(160, 180, 200, 0.10);
+        }
+
+        .panel-label {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: #657585;
+            margin-bottom: 8px;
+        }
+
+        .panel-title {
+            font-size: 22px;
+            letter-spacing: 4px;
+            font-weight: 300;
+            color: #e5ebef;
+        }
+
+        .back-button {
+            border: 1px solid rgba(160, 180, 200, 0.18);
+            background: rgba(10, 14, 19, 0.75);
+            color: #8fa0af;
+
+            padding: 10px 15px;
+
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 9px;
+            letter-spacing: 2px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        .back-button:hover {
+            background: rgba(40, 55, 65, 0.65);
+            border-color: rgba(180, 200, 215, 0.35);
+            color: #dce5ea;
+        }
+
         /* REPLICATOR */
 
-        .replicator {
-            grid-column: 1 / -1;
-            min-height: auto;
+        .replicator-panel {
+            background: rgba(8, 12, 17, 0.82);
+            border: 1px solid rgba(160, 180, 200, 0.12);
             padding: 28px;
-        }
-
-        .replicator-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(160, 180, 200, 0.08);
-        }
-
-        .replicator-title {
-            font-size: 17px;
-            letter-spacing: 3px;
-            font-weight: 400;
-            color: #e1e7ec;
         }
 
         .replicator-status {
@@ -270,7 +327,7 @@
         }
 
         .food-list {
-            max-height: 520px;
+            max-height: 500px;
             overflow-y: auto;
             padding-right: 8px;
         }
@@ -288,7 +345,7 @@
         }
 
         .food-category {
-            margin-bottom: 24px;
+            margin-bottom: 25px;
         }
 
         .food-category:last-child {
@@ -310,6 +367,7 @@
             gap: 15px;
 
             padding: 11px 12px;
+
             border-bottom: 1px solid rgba(160, 180, 200, 0.06);
 
             cursor: pointer;
@@ -326,6 +384,12 @@
             padding-left: 16px;
         }
 
+        .food-item.active {
+            background: rgba(75, 180, 105, 0.08);
+            border-left: 2px solid #55d67a;
+            padding-left: 14px;
+        }
+
         .food-name {
             font-size: 13px;
             color: #cbd4dc;
@@ -336,12 +400,6 @@
             letter-spacing: 1px;
             color: #7f91a3;
             white-space: nowrap;
-        }
-
-        .food-item.active {
-            background: rgba(75, 180, 105, 0.08);
-            border-left: 2px solid #55d67a;
-            padding-left: 14px;
         }
 
         .replicator-display {
@@ -374,6 +432,25 @@
             font-size: 11px;
             letter-spacing: 3px;
             color: #55d67a;
+        }
+
+        /* PLACEHOLDER PANELS */
+
+        .placeholder-panel {
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+
+            background: rgba(8, 12, 17, 0.82);
+            border: 1px solid rgba(160, 180, 200, 0.12);
+        }
+
+        .placeholder-text {
+            font-size: 10px;
+            letter-spacing: 4px;
+            color: #657585;
         }
 
         /* FOOTER */
@@ -426,6 +503,18 @@
             }
         }
 
+        @keyframes panelIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* MOBILE */
 
         @media (max-width: 700px) {
@@ -464,14 +553,13 @@
                 min-height: 135px;
             }
 
-            .replicator {
-                padding: 22px;
-            }
-
-            .replicator-header {
+            .panel-header {
                 align-items: flex-start;
                 flex-direction: column;
-                gap: 8px;
+            }
+
+            .replicator-panel {
+                padding: 20px;
             }
 
             .food-item {
@@ -510,50 +598,73 @@
                 height: 95px;
             }
 
-            .replicator {
-                padding: 18px;
+            .replicator-panel {
+                padding: 16px;
             }
 
             .food-name {
                 font-size: 12px;
             }
         }
+
     </style>
 </head>
 
 <body>
 
-    <div class="app">
+<div class="app">
 
-        <header>
-            <div class="eyebrow">Personal Utility System</div>
-            <h1>UMBRA</h1>
-            <div class="subtitle">Life Support</div>
-        </header>
+    <!-- HEADER -->
 
-        <section class="core-area">
-            <div class="system-core">
+    <header>
 
-                <div class="core-content">
+        <div class="eyebrow">
+            Personal Utility System
+        </div>
 
-                    <img
-                        class="umbra-crest"
-                        src="umbra_genetics_wappen_gross.png"
-                        alt="UMBRA crest"
-                    >
+        <h1>
+            UMBRA
+        </h1>
 
-                    <div class="system-status">
-                        SYSTEM
-                    </div>
+        <div class="subtitle">
+            Life Support
+        </div>
 
-                    <div class="online">
-                        ONLINE
-                    </div>
+    </header>
 
+
+    <!-- SYSTEM CORE -->
+
+    <section class="core-area">
+
+        <div class="system-core">
+
+            <div class="core-content">
+
+                <img
+                    class="umbra-crest"
+                    src="umbra_genetics_wappen_gross.png"
+                    alt="UMBRA crest"
+                >
+
+                <div class="system-status">
+                    SYSTEM
+                </div>
+
+                <div class="online">
+                    ONLINE
                 </div>
 
             </div>
-        </section>
+
+        </div>
+
+    </section>
+
+
+    <!-- MODULES HOME -->
+
+    <section id="moduleHome">
 
         <div class="modules-title">
             Modules
@@ -561,9 +672,13 @@
 
         <section class="modules">
 
+
             <!-- MODULE 01 -->
 
-            <article class="module">
+            <article
+                class="module"
+                data-module="ac"
+            >
 
                 <div class="module-number">
                     MODULE 01
@@ -577,12 +692,19 @@
                     Air conditioning calculations and useful climate utilities.
                 </p>
 
+                <div class="module-status">
+                    READY
+                </div>
+
             </article>
 
 
             <!-- MODULE 02 -->
 
-            <article class="module">
+            <article
+                class="module"
+                data-module="radar"
+            >
 
                 <div class="module-number">
                     MODULE 02
@@ -596,347 +718,857 @@
                     Environmental monitoring and radar utilities.
                 </p>
 
+                <div class="module-status">
+                    READY
+                </div>
+
             </article>
 
 
             <!-- MODULE 03 -->
 
-            <article class="module replicator">
+            <article
+                class="module"
+                data-module="replicator"
+            >
 
                 <div class="module-number">
                     MODULE 03
                 </div>
 
-                <div class="replicator-header">
+                <h2>
+                    REPLICATOR
+                </h2>
 
-                    <div class="replicator-title">
+                <p>
+                    Air fryer temperature and cooking time database.
+                </p>
+
+                <div class="module-status">
+                    READY
+                </div>
+
+            </article>
+
+
+        </section>
+
+    </section>
+
+
+    <!-- MODULE 01 PANEL -->
+
+    <section
+        class="module-panel"
+        id="acPanel"
+    >
+
+        <div class="panel-header">
+
+            <div>
+                <div class="panel-label">
+                    MODULE 01
+                </div>
+
+                <div class="panel-title">
+                    AC CALCULATOR
+                </div>
+            </div>
+
+            <button class="back-button">
+                BACK TO MODULES
+            </button>
+
+        </div>
+
+        <div class="placeholder-panel">
+
+            <div class="placeholder-text">
+                AC CALCULATOR · READY FOR INTEGRATION
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MODULE 02 PANEL -->
+
+    <section
+        class="module-panel"
+        id="radarPanel"
+    >
+
+        <div class="panel-header">
+
+            <div>
+                <div class="panel-label">
+                    MODULE 02
+                </div>
+
+                <div class="panel-title">
+                    RADAR
+                </div>
+            </div>
+
+            <button class="back-button">
+                BACK TO MODULES
+            </button>
+
+        </div>
+
+        <div class="placeholder-panel">
+
+            <div class="placeholder-text">
+                RADAR · SYSTEM RESERVED
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- MODULE 03 PANEL -->
+
+    <section
+        class="module-panel"
+        id="replicatorPanel"
+    >
+
+        <div class="replicator-panel">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <div class="panel-label">
+                        MODULE 03
+                    </div>
+
+                    <div class="panel-title">
                         REPLICATOR
                     </div>
+
+                </div>
+
+                <div>
 
                     <div class="replicator-status">
                         SYSTEM READY
                     </div>
 
+                    <button
+                        class="back-button"
+                        style="margin-top:10px;"
+                    >
+                        BACK TO MODULES
+                    </button>
+
                 </div>
 
-                <div class="food-list">
+            </div>
 
-                    <!-- SNACKS -->
 
-                    <div class="food-category">
+            <!-- FOOD LIST -->
 
-                        <div class="category-title">
-                            Snacks
-                        </div>
+            <div class="food-list">
 
-                        <div class="food-item"
-                             data-name="Bratkartoffeln TK"
-                             data-settings="200 °C · 25 MIN">
-                            <span class="food-name">Bratkartoffeln TK</span>
-                            <span class="food-settings">200 °C · 25 MIN</span>
-                        </div>
 
-                        <div class="food-item"
-                             data-name="Camembert TK"
-                             data-settings="180 °C · 8–10 MIN">
-                            <span class="food-name">Camembert TK</span>
-                            <span class="food-settings">180 °C · 8–10 MIN</span>
-                        </div>
+                <!-- SNACKS -->
 
-                        <div class="food-item"
-                             data-name="Frühlingsrollen TK"
-                             data-settings="200 °C · 8–10 MIN">
-                            <span class="food-name">Frühlingsrollen TK</span>
-                            <span class="food-settings">200 °C · 8–10 MIN</span>
-                        </div>
+                <div class="food-category">
 
-                        <div class="food-item"
-                             data-name="Mini Berliner TK"
-                             data-settings="160 °C · 6–8 MIN">
-                            <span class="food-name">Mini Berliner TK</span>
-                            <span class="food-settings">160 °C · 6–8 MIN</span>
-                        </div>
+                    <div class="category-title">
+                        Snacks
+                    </div>
 
-                        <div class="food-item"
-                             data-name="Mozzarella Sticks"
-                             data-settings="200 °C · 8 MIN">
-                            <span class="food-name">Mozzarella Sticks</span>
-                            <span class="food-settings">200 °C · 8 MIN</span>
-                        </div>
+                    <div class="food-item"
+                         data-name="Bratkartoffeln TK"
+                         data-settings="200 °C · 25 MIN">
 
-                        <div class="food-item"
-                             data-name="Pizzabaguettes TK"
-                             data-settings="180 °C · 10–12 MIN">
-                            <span class="food-name">Pizzabaguettes TK</span>
-                            <span class="food-settings">180 °C · 10–12 MIN</span>
-                        </div>
+                        <span class="food-name">
+                            Bratkartoffeln TK
+                        </span>
 
-                        <div class="food-item"
-                             data-name="Onionrings TK"
-                             data-settings="200 °C · 10–12 MIN">
-                            <span class="food-name">Onionrings TK</span>
-                            <span class="food-settings">200 °C · 10–12 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Kartoffelwedges"
-                             data-settings="180 °C · 35–40 MIN">
-                            <span class="food-name">Kartoffelwedges</span>
-                            <span class="food-settings">180 °C · 35–40 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Kartoffelwedges TK"
-                             data-settings="180 °C · 18–20 MIN">
-                            <span class="food-name">Kartoffelwedges TK</span>
-                            <span class="food-settings">180 °C · 18–20 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Knusperkroketten TK"
-                             data-settings="180 °C · 12–15 MIN">
-                            <span class="food-name">Knusperkroketten TK</span>
-                            <span class="food-settings">180 °C · 12–15 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Pommes selbstgemacht"
-                             data-settings="180 °C · 35–40 MIN">
-                            <span class="food-name">Pommes selbstgemacht</span>
-                            <span class="food-settings">180 °C · 35–40 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Pommes TK"
-                             data-settings="180 °C · 20–25 MIN">
-                            <span class="food-name">Pommes TK</span>
-                            <span class="food-settings">180 °C · 20–25 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Süßkartoffeln halbiert"
-                             data-settings="180 °C · 15–20 MIN">
-                            <span class="food-name">Süßkartoffeln halbiert</span>
-                            <span class="food-settings">180 °C · 15–20 MIN</span>
-                        </div>
+                        <span class="food-settings">
+                            200 °C · 25 MIN
+                        </span>
 
                     </div>
 
 
-                    <!-- VEGETABLES -->
+                    <div class="food-item"
+                         data-name="Camembert TK"
+                         data-settings="180 °C · 8–10 MIN">
 
-                    <div class="food-category">
+                        <span class="food-name">
+                            Camembert TK
+                        </span>
 
-                        <div class="category-title">
-                            Vegetables &amp; Sides
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Brokkoliröschen"
-                             data-settings="180 °C · 8–10 MIN">
-                            <span class="food-name">Brokkoliröschen</span>
-                            <span class="food-settings">180 °C · 8–10 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Blumenkohlscheibe"
-                             data-settings="190 °C · 12–15 MIN">
-                            <span class="food-name">Blumenkohlscheibe</span>
-                            <span class="food-settings">190 °C · 12–15 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Champignons"
-                             data-settings="200 °C · 18–22 MIN">
-                            <span class="food-name">Champignons</span>
-                            <span class="food-settings">200 °C · 18–22 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Gemüsepuffer TK"
-                             data-settings="180 °C · 12–15 MIN">
-                            <span class="food-name">Gemüsepuffer TK</span>
-                            <span class="food-settings">180 °C · 12–15 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Grillgemüse"
-                             data-settings="190 °C · 12–15 MIN">
-                            <span class="food-name">Grillgemüse</span>
-                            <span class="food-settings">190 °C · 12–15 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Maiskolben"
-                             data-settings="180 °C · 12–16 MIN">
-                            <span class="food-name">Maiskolben</span>
-                            <span class="food-settings">180 °C · 12–16 MIN</span>
-                        </div>
-
-                        <div class="food-item"
-                             data-name="Pak Choi mariniert"
-                             data-settings="200 °C · 6–8 MIN">
-                            <span class="food-name">Pak Choi mariniert</span>
-                            <span class="food-settings">200 °C · 6–8 MIN</span>
-                        </div>
+                        <span class="food-settings">
+                            180 °C · 8–10 MIN
+                        </span>
 
                     </div>
 
 
-                    <!-- BREAD & BREAKFAST -->
+                    <div class="food-item"
+                         data-name="Frühlingsrollen TK"
+                         data-settings="200 °C · 8–10 MIN">
 
-                    <div class="food-category">
+                        <span class="food-name">
+                            Frühlingsrollen TK
+                        </span>
 
-                        <div class="category-title">
-                            Bread &amp; Breakfast
-                        </div>
+                        <span class="food-settings">
+                            200 °C · 8–10 MIN
+                        </span>
 
-                        <div class="food-item"
-                             data-name="Aufbackbrötchen"
-                             data-settings="160 °C · 8–10 MIN">
-                            <span class="food-name">Aufbackbrötchen</span>
-                            <span class="food-settings">160 °C · 8–10 MIN</span>
-                        </div>
+                    </div>
 
-                        <div class="food-item"
-                             data-name="Blätterteigteilchen"
-                             data-settings="180 °C · 8–12 MIN">
-                            <span class="food-name">Blätterteigteilchen</span>
-                            <span class="food-settings">180 °C · 8–12 MIN</span>
-                        </div>
 
-                        <div class="food-item"
-                             data-name="Brötchen vom Vortag"
-                             data-settings="180 °C · 4–6 MIN">
-                            <span class="food-name">Brötchen vom Vortag</span>
-                            <span class="food-settings">180 °C · 4–6 MIN</span>
-                        </div>
+                    <div class="food-item"
+                         data-name="Mini Berliner TK"
+                         data-settings="160 °C · 6–8 MIN">
 
-                        <div class="food-item"
-                             data-name="Croissants"
-                             data-settings="180 °C · 12 MIN">
-                            <span class="food-name">Croissants</span>
-                            <span class="food-settings">180 °C · 12 MIN</span>
-                        </div>
+                        <span class="food-name">
+                            Mini Berliner TK
+                        </span>
 
-                        <div class="food-item"
-                             data-name="Ei weich"
-                             data-settings="180 °C · 7 MIN">
-                            <span class="food-name">Ei (weich)</span>
-                            <span class="food-settings">180 °C · 7 MIN</span>
-                        </div>
+                        <span class="food-settings">
+                            160 °C · 6–8 MIN
+                        </span>
 
-                        <div class="food-item"
-                             data-name="Ei mittel"
-                             data-settings="180 °C · 8 MIN">
-                            <span class="food-name">Ei (mittel)</span>
-                            <span class="food-settings">180 °C · 8 MIN</span>
-                        </div>
+                    </div>
 
-                        <div class="food-item"
-                             data-name="Ei hart"
-                             data-settings="180 °C · 9 MIN">
-                            <span class="food-name">Ei (hart)</span>
-                            <span class="food-settings">180 °C · 9 MIN</span>
-                        </div>
 
-                        <div class="food-item"
-                             data-name="Laugenbrezeln TK"
-                             data-settings="180 °C · 8–10 MIN">
-                            <span class="food-name">Laugenbrezeln TK</span>
-                            <span class="food-settings">180 °C · 8–10 MIN</span>
-                        </div>
+                    <div class="food-item"
+                         data-name="Mozzarella Sticks"
+                         data-settings="200 °C · 8 MIN">
 
-                        <div class="food-item"
-                             data-name="Omelette"
-                             data-settings="180 °C · 10–12 MIN">
-                            <span class="food-name">Omelette</span>
-                            <span class="food-settings">180 °C · 10–12 MIN</span>
-                        </div>
+                        <span class="food-name">
+                            Mozzarella Sticks
+                        </span>
 
-                        <div class="food-item"
-                             data-name="Spiegeleier"
-                             data-settings="200 °C · 10 MIN">
-                            <span class="food-name">Spiegeleier</span>
-                            <span class="food-settings">200 °C · 10 MIN</span>
-                        </div>
+                        <span class="food-settings">
+                            200 °C · 8 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Pizzabaguettes TK"
+                         data-settings="180 °C · 10–12 MIN">
+
+                        <span class="food-name">
+                            Pizzabaguettes TK
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 10–12 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Onionrings TK"
+                         data-settings="200 °C · 10–12 MIN">
+
+                        <span class="food-name">
+                            Onionrings TK
+                        </span>
+
+                        <span class="food-settings">
+                            200 °C · 10–12 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Kartoffelwedges"
+                         data-settings="180 °C · 35–40 MIN">
+
+                        <span class="food-name">
+                            Kartoffelwedges
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 35–40 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Kartoffelwedges TK"
+                         data-settings="180 °C · 18–20 MIN">
+
+                        <span class="food-name">
+                            Kartoffelwedges TK
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 18–20 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Knusperkroketten TK"
+                         data-settings="180 °C · 12–15 MIN">
+
+                        <span class="food-name">
+                            Knusperkroketten TK
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 12–15 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Pommes selbstgemacht"
+                         data-settings="180 °C · 35–40 MIN">
+
+                        <span class="food-name">
+                            Pommes selbstgemacht
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 35–40 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Pommes TK"
+                         data-settings="180 °C · 20–25 MIN">
+
+                        <span class="food-name">
+                            Pommes TK
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 20–25 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Süßkartoffeln halbiert"
+                         data-settings="180 °C · 15–20 MIN">
+
+                        <span class="food-name">
+                            Süßkartoffeln halbiert
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 15–20 MIN
+                        </span>
 
                     </div>
 
                 </div>
 
 
-                <!-- REPLICATOR DISPLAY -->
+                <!-- VEGETABLES -->
 
-                <div class="replicator-display">
+                <div class="food-category">
 
-                    <div class="display-label">
-                        REPLICATOR READY
+                    <div class="category-title">
+                        Vegetables &amp; Sides
                     </div>
 
-                    <div class="display-food" id="displayFood">
-                        SELECT FOOD
+
+                    <div class="food-item"
+                         data-name="Brokkoliröschen"
+                         data-settings="180 °C · 8–10 MIN">
+
+                        <span class="food-name">
+                            Brokkoliröschen
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 8–10 MIN
+                        </span>
+
                     </div>
 
-                    <div class="display-settings" id="displaySettings">
-                        — · —
+
+                    <div class="food-item"
+                         data-name="Blumenkohlscheibe"
+                         data-settings="190 °C · 12–15 MIN">
+
+                        <span class="food-name">
+                            Blumenkohlscheibe
+                        </span>
+
+                        <span class="food-settings">
+                            190 °C · 12–15 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Champignons"
+                         data-settings="200 °C · 18–22 MIN">
+
+                        <span class="food-name">
+                            Champignons
+                        </span>
+
+                        <span class="food-settings">
+                            200 °C · 18–22 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Gemüsepuffer TK"
+                         data-settings="180 °C · 12–15 MIN">
+
+                        <span class="food-name">
+                            Gemüsepuffer TK
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 12–15 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Grillgemüse"
+                         data-settings="190 °C · 12–15 MIN">
+
+                        <span class="food-name">
+                            Grillgemüse
+                        </span>
+
+                        <span class="food-settings">
+                            190 °C · 12–15 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Maiskolben"
+                         data-settings="180 °C · 12–16 MIN">
+
+                        <span class="food-name">
+                            Maiskolben
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 12–16 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Pak Choi mariniert"
+                         data-settings="200 °C · 6–8 MIN">
+
+                        <span class="food-name">
+                            Pak Choi mariniert
+                        </span>
+
+                        <span class="food-settings">
+                            200 °C · 6–8 MIN
+                        </span>
+
                     </div>
 
                 </div>
 
-            </article>
 
-        </section>
+                <!-- BREAD & BREAKFAST -->
 
+                <div class="food-category">
 
-        <footer>
-            UMBRA LIFE SUPPORT · SYSTEM ONLINE
-        </footer>
-
-    </div>
+                    <div class="category-title">
+                        Bread &amp; Breakfast
+                    </div>
 
 
-    <script>
+                    <div class="food-item"
+                         data-name="Aufbackbrötchen"
+                         data-settings="160 °C · 8–10 MIN">
 
-        const foodItems = document.querySelectorAll(".food-item");
+                        <span class="food-name">
+                            Aufbackbrötchen
+                        </span>
 
-        const displayFood = document.getElementById("displayFood");
-        const displaySettings = document.getElementById("displaySettings");
+                        <span class="food-settings">
+                            160 °C · 8–10 MIN
+                        </span>
 
-        /* UMBRA click sound */
+                    </div>
 
-        const keySound = new Audio("key1.mp3");
-        keySound.volume = 0.35;
 
-        foodItems.forEach(item => {
+                    <div class="food-item"
+                         data-name="Blätterteigteilchen"
+                         data-settings="180 °C · 8–12 MIN">
 
-            item.addEventListener("click", () => {
+                        <span class="food-name">
+                            Blätterteigteilchen
+                        </span>
 
-                foodItems.forEach(other => {
-                    other.classList.remove("active");
-                });
+                        <span class="food-settings">
+                            180 °C · 8–12 MIN
+                        </span>
 
-                item.classList.add("active");
+                    </div>
 
-                displayFood.textContent =
-                    item.dataset.name;
 
-                displaySettings.textContent =
-                    item.dataset.settings;
+                    <div class="food-item"
+                         data-name="Brötchen vom Vortag"
+                         data-settings="180 °C · 4–6 MIN">
 
-                try {
-                    keySound.currentTime = 0;
-                    keySound.play();
-                } catch (error) {
-                    /* sound is optional */
-                }
+                        <span class="food-name">
+                            Brötchen vom Vortag
+                        </span>
 
-            });
+                        <span class="food-settings">
+                            180 °C · 4–6 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Croissants"
+                         data-settings="180 °C · 12 MIN">
+
+                        <span class="food-name">
+                            Croissants
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 12 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Ei weich"
+                         data-settings="180 °C · 7 MIN">
+
+                        <span class="food-name">
+                            Ei (weich)
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 7 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Ei mittel"
+                         data-settings="180 °C · 8 MIN">
+
+                        <span class="food-name">
+                            Ei (mittel)
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 8 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Ei hart"
+                         data-settings="180 °C · 9 MIN">
+
+                        <span class="food-name">
+                            Ei (hart)
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 9 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Laugenbrezeln TK"
+                         data-settings="180 °C · 8–10 MIN">
+
+                        <span class="food-name">
+                            Laugenbrezeln TK
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 8–10 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Omelette"
+                         data-settings="180 °C · 10–12 MIN">
+
+                        <span class="food-name">
+                            Omelette
+                        </span>
+
+                        <span class="food-settings">
+                            180 °C · 10–12 MIN
+                        </span>
+
+                    </div>
+
+
+                    <div class="food-item"
+                         data-name="Spiegeleier"
+                         data-settings="200 °C · 10 MIN">
+
+                        <span class="food-name">
+                            Spiegeleier
+                        </span>
+
+                        <span class="food-settings">
+                            200 °C · 10 MIN
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- DISPLAY -->
+
+            <div class="replicator-display">
+
+                <div class="display-label">
+                    REPLICATOR READY
+                </div>
+
+                <div
+                    class="display-food"
+                    id="displayFood"
+                >
+                    SELECT FOOD
+                </div>
+
+                <div
+                    class="display-settings"
+                    id="displaySettings"
+                >
+                    — · —
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+        UMBRA LIFE SUPPORT · SYSTEM ONLINE
+    </footer>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       UMBRA SOUND
+    ========================================= */
+
+    const keySound = new Audio("key1.mp3");
+
+    keySound.volume = 0.35;
+
+
+    function playKeySound() {
+
+        try {
+
+            keySound.currentTime = 0;
+            keySound.play();
+
+        } catch (error) {
+
+            /* Sound remains optional */
+
+        }
+
+    }
+
+
+    /* =========================================
+       MODULE NAVIGATION
+    ========================================= */
+
+    const moduleHome =
+        document.getElementById("moduleHome");
+
+    const modulePanels =
+        document.querySelectorAll(".module-panel");
+
+    const modules =
+        document.querySelectorAll(".module");
+
+
+    function openModule(moduleName) {
+
+        playKeySound();
+
+        moduleHome.style.display = "none";
+
+        modulePanels.forEach(panel => {
+            panel.classList.remove("active");
+        });
+
+
+        if (moduleName === "ac") {
+
+            document
+                .getElementById("acPanel")
+                .classList.add("active");
+
+        }
+
+
+        if (moduleName === "radar") {
+
+            document
+                .getElementById("radarPanel")
+                .classList.add("active");
+
+        }
+
+
+        if (moduleName === "replicator") {
+
+            document
+                .getElementById("replicatorPanel")
+                .classList.add("active");
+
+        }
+
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    function closeModules() {
+
+        playKeySound();
+
+        modulePanels.forEach(panel => {
+            panel.classList.remove("active");
+        });
+
+        moduleHome.style.display = "block";
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+    modules.forEach(module => {
+
+        module.addEventListener("click", () => {
+
+            openModule(
+                module.dataset.module
+            );
 
         });
 
-    </script>
+    });
+
+
+    document
+        .querySelectorAll(".back-button")
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                closeModules
+            );
+
+        });
+
+
+    /* =========================================
+       REPLICATOR
+    ========================================= */
+
+    const foodItems =
+        document.querySelectorAll(".food-item");
+
+    const displayFood =
+        document.getElementById("displayFood");
+
+    const displaySettings =
+        document.getElementById("displaySettings");
+
+
+    foodItems.forEach(item => {
+
+        item.addEventListener("click", () => {
+
+            foodItems.forEach(other => {
+
+                other.classList.remove("active");
+
+            });
+
+
+            item.classList.add("active");
+
+
+            displayFood.textContent =
+                item.dataset.name;
+
+
+            displaySettings.textContent =
+                item.dataset.settings;
+
+
+            playKeySound();
+
+        });
+
+    });
+
+</script>
 
 </body>
 </html>
-

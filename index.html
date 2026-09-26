@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UMBRA GENETICS — BIOLOGICAL THREAT DETECTION SYSTEM</title>
+<style>
+    * { box-sizing: border-box; }
+
+    html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: #020402;
+        color: #00ff55;
+        font-family: "Courier New", monospace;
+        overflow: hidden;
+    }
+
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background:
+            radial-gradient(circle at center, rgba(0,255,80,.035), transparent 55%),
+            #020402;
+    }
+
+    .umbra {
+        width: min(96vw, 900px);
+        height: min(96vh, 900px);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header {
+        border: 1px solid #00aa38;
+        box-shadow: 0 0 12px rgba(0,255,70,.15);
+        padding: 9px 12px;
+        background: rgba(0,20,5,.7);
+    }
+
+    .title {
+        font-size: clamp(14px, 2vw, 21px);
+        letter-spacing: 2px;
+        font-weight: bold;
+        text-shadow: 0 0 8px rgba(0,255,70,.6);
+    }
+
+    .subtitle {
+        margin-top: 4px;
+        font-size: 10px;
+        color: #5dcc78;
+        letter-spacing: 1px;
+    }
+
+    .radar-wrap {
+        position: relative;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid #006f29;
+        background: #010301;
+        box-shadow: inset 0 0 35px rgba(0,255,70,.05);
+        overflow: hidden;
+    }
+
+    canvas {
+        display: block;
+        width: min(82vh, 82vw, 700px);
+        height: min(82vh, 82vw, 700px);
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .status {
+        position: absolute;
+        left: 12px;
+        top: 10px;
+        font-size: 11px;
+        line-height: 1.5;
+        color: #6cff8e;
+        pointer-events: none;
+        text-shadow: 0 0 5px #00ff44;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        align-items: center;
+        border: 1px solid #006f29;
+        padding: 8px 10px;
+        background: rgba(0,20,5,.7);
+        font-size: 10px;
+        color: #55c96f;
+    }
+
+    button {
+        font-family: inherit;
+        font-weight: bold;
+        color: #00ff55;
+        background: #031006;
+        border: 1px solid #00aa38;
+        padding: 7px 12px;
+        cursor: pointer;
+        letter-spacing: 1px;
+    }
+
+    button:hover {
+        background: #06200c;
+        box-shadow: 0 0 10px rgba(0,255,70,.25);
+    }
+
+    .scanline {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 20;
+        background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0,255,70,.018) 50%,
+            transparent 51%
+        );
+        background-size: 100% 4px;
+        mix-blend-mode: screen;
+    }
+
+    @media (max-width: 600px) {
+        .umbra { width: 98vw; height: 98vh; }
+        .controls { font-size: 9px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="umbra">
+    <div class="header">
+        <div class="title">UMBRA GENETICS // BIOLOGICAL THREAT DETECTION SYSTEM</div>
+        <div class="subtitle">RADAR SUBSYSTEM // SIMULATION MODE // V0.2</div>
+    </div>
+
+    <div class="radar-wrap">
+        <canvas id="radarCanvas" width="700" height="700"></canvas>
+
+        <div class="status">
+            SYSTEM ........ ONLINE<br>
+            RADAR ......... ACTIVE<br>
+            SWEEP ......... <span id="angleReadout">000°</span><br>
+            CONTACTS ...... <span id="contactReadout">0</span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <span>UMBRA // SENSOR ARRAY A-01</span>
+        <button id="soundButton">🔊 SOUND OFF</button>
+    </div>
+</div>
+
+<div class="scanline"></div>
+
+<script>
+"use strict";
+
+const canvas = document.getElementById("radarCanvas");
+const ctx = canvas.getContext("2d");
+
+const angleReadout = document.getElementById("angleReadout");
+const contactReadout = document.getElementById("contactReadout");
+const soundButton = document.getElementById("soundButton");
+
+const SIZE = canvas.width;
+const centerX = SIZE / 2;
+const centerY = SIZE / 2;
+const radius = SIZE * 0.43;
+
+let radarAngle = 0;
+const radarSpeed = 0.012;
+const blips = [];
+const maxBlips = 5;
+
+let audioCtx = null;
+let soundEnabled = false;
+
+function initAudio() {
+    if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    if (audioCtx.state === "suspended") {
+        audioCtx.resume();
+    }
+
+    soundEnabled = !soundEnabled;
+    soundButton.textContent = soundEnabled ? "🔊 SOUND ON" : "🔇 SOUND OFF";
+}
+
+soundButton.addEventListener("click", initAudio);
+
+function playPing(volume = 0.45) {
+    if (!soundEnabled || !audioCtx) return;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = "sine";
+    osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(
+        320,
+        audioCtx.currentTime + 0.55
+    );
+
+    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+        volume,
+        audioCtx.currentTime + 0.015
+    );
+    gain.gain.exponentialRampToValueAtTime(
+        0.0001,
+        audioCtx.currentTime + 0.8
+    );
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.85);
+}
+
+function createBlip() {
+    const angle = Math.random() * Math.PI * 2;
+    const distance = Math.random() * (radius - 55) + 35;
+
+    return {
+        x: centerX + Math.cos(angle) * distance,
+        y: centerY + Math.sin(angle) * distance,
+        angle,
+        distance,
+        intensity: 0,
+        detected: false,
+        life: Math.random() * 0.8 + 0.5
+    };
+}
+
+function seedBlips() {
+    blips.length = 0;
+
+    for (let i = 0; i < maxBlips; i++) {
+        blips.push(createBlip());
+    }
+}
+
+function drawGrid() {
+    ctx.save();
+
+    ctx.strokeStyle = "rgba(0, 255, 70, 0.22)";
+    ctx.lineWidth = 1;
+
+    for (let i = 1; i <= 4; i++) {
+        ctx.beginPath();
+        ctx.arc(
+            centerX,
+            centerY,
+            radius * (i / 4),
+            0,
+            Math.PI * 2
+        );
+        ctx.stroke();
+    }
+
+    ctx.beginPath();
+    ctx.moveTo(centerX - radius, centerY);
+    ctx.lineTo(centerX + radius, centerY);
+    ctx.moveTo(centerX, centerY - radius);
+    ctx.lineTo(centerX, centerY + radius);
+    ctx.stroke();
+
+    ctx.strokeStyle = "rgba(0, 255, 70, 0.45)";
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+function drawSweep() {
+    const x = centerX + Math.cos(radarAngle) * radius;
+    const y = centerY + Math.sin(radarAngle) * radius;
+
+    const gradient = ctx.createLinearGradient(
+        centerX, centerY, x, y
+    );
+
+    gradient.addColorStop(0, "rgba(0,255,70,0.02)");
+    gradient.addColorStop(0.7, "rgba(0,255,70,0.10)");
+    gradient.addColorStop(1, "rgba(0,255,70,0.75)");
+
+    ctx.save();
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = 2;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = "#00ff44";
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    ctx.restore();
+}
+
+function angleDifference(a, b) {
+    let diff = Math.abs(a - b);
+    if (diff > Math.PI) diff = Math.PI * 2 - diff;
+    return diff;
+}
+
+function drawBlip(blip) {
+    if (blip.intensity <= 0) return;
+
+    ctx.save();
+
+    // Pulse-Modul:
+    // Jeder Kontakt bekommt eine sanfte, zeitbasierte Pulsation.
+    // Noch keine Kontakt-Datenbank – die Werte sind bewusst neutral.
+    const pulseSpeed = 0.003;
+    const pulseIntensity = 1.2;
+    const pulseValue = Math.sin(Date.now() * pulseSpeed);
+
+    const dynamicSize = Math.max(
+        1,
+        3 + blip.intensity * 3 + pulseValue * pulseIntensity
+    );
+
+    const dynamicGlow = Math.max(
+        4,
+        8 + blip.intensity * 18 + pulseValue * 5
+    );
+
+    ctx.shadowBlur = dynamicGlow;
+    ctx.shadowColor = "#00ff44";
+    ctx.fillStyle = "#00ff55";
+
+    ctx.beginPath();
+    ctx.arc(
+        blip.x,
+        blip.y,
+        dynamicSize,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    ctx.globalAlpha = blip.intensity * 0.25;
+    ctx.beginPath();
+    ctx.arc(
+        blip.x,
+        blip.y,
+        10 + blip.intensity * 14 + pulseValue * 3,
+        0,
+        Math.PI * 2
+    );
+    ctx.fill();
+
+    ctx.restore();
+}
+
+function animate() {
+    // Fade the previous frame to create the radar trail.
+    ctx.fillStyle = "rgba(0, 5, 1, 0.12)";
+    ctx.fillRect(0, 0, SIZE, SIZE);
+
+    drawGrid();
+    drawSweep();
+
+    for (let i = 0; i < blips.length; i++) {
+        const blip = blips[i];
+
+        const dx = blip.x - centerX;
+        const dy = blip.y - centerY;
+        blip.angle = Math.atan2(dy, dx);
+
+        const diff = angleDifference(radarAngle, blip.angle);
+
+        if (diff < 0.035 && !blip.detected) {
+            blip.detected = true;
+            blip.intensity = 1;
+            playPing();
+        }
+
+        if (diff > 0.12) {
+            blip.detected = false;
+        }
+
+        if (blip.intensity > 0) {
+            drawBlip(blip);
+            blip.intensity -= 0.018;
+        }
+    }
+
+    while (blips.length < maxBlips) {
+        blips.push(createBlip());
+    }
+
+    radarAngle += radarSpeed;
+
+    if (radarAngle > Math.PI * 2) {
+        radarAngle -= Math.PI * 2;
+    }
+
+    const degrees =
+        Math.round((radarAngle * 180 / Math.PI + 360) % 360);
+
+    angleReadout.textContent =
+        String(degrees).padStart(3, "0") + "°";
+
+    contactReadout.textContent = blips.length;
+
+    requestAnimationFrame(animate);
+}
+
+seedBlips();
+animate();
+</script>
+
+</body>
+</html>

@@ -216,7 +216,7 @@ body::before {
 
 .modules {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
     gap: 16px;
 }
 
@@ -523,6 +523,300 @@ body::before {
     margin-top: 28px;
 }
 
+@media (max-width:900px) {
+    .modules {
+        grid-template-columns: repeat(2,1fr);
+    }
+}
+
+
+/* =========================
+   MODULE 04 · RESPIRATION
+   ========================= */
+
+.resp-panel {
+    max-width: 900px;
+    margin: 30px auto 0;
+}
+
+.resp-status {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 13px;
+    border: 1px solid rgba(85,214,122,.14);
+    background: rgba(8,15,11,.55);
+    color: #55d67a;
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.resp-main {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(280px, .82fr);
+    gap: 24px;
+    align-items: stretch;
+}
+
+.resp-display {
+    min-height: 560px;
+    padding: 30px 22px;
+    background:
+        radial-gradient(circle at center, rgba(30,55,45,.22), rgba(5,9,12,.92) 62%);
+    border: 1px solid rgba(130,155,170,.14);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.resp-phase {
+    min-height: 18px;
+    margin-bottom: 17px;
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #55d67a;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(85,214,122,.18);
+}
+
+.resp-orbit {
+    width: 280px;
+    height: 280px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resp-orbit::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border-radius: 50%;
+    border: 1px solid rgba(85,214,122,.18);
+    box-shadow:
+        0 0 35px rgba(85,214,122,.04),
+        inset 0 0 30px rgba(0,0,0,.75);
+}
+
+.resp-orbit::after {
+    content: "";
+    position: absolute;
+    inset: -9px;
+    border-radius: 50%;
+    border: 1px dashed rgba(110,135,150,.16);
+    animation: rotate 26s linear infinite;
+}
+
+.resp-progress {
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #55d67a 0deg,
+        rgba(85,214,122,.08) 0deg,
+        rgba(85,214,122,.04) 360deg
+    );
+    -webkit-mask: radial-gradient(circle, transparent 72%, #000 73%);
+    mask: radial-gradient(circle, transparent 72%, #000 73%);
+    transform: rotate(-90deg);
+}
+
+.resp-circle {
+    width: 126px;
+    height: 126px;
+    border-radius: 50%;
+    border: 1px solid rgba(85,214,122,.42);
+    background:
+        radial-gradient(circle at 38% 32%, rgba(85,214,122,.15), rgba(7,13,10,.96) 68%);
+    box-shadow:
+        0 0 35px rgba(85,214,122,.08),
+        inset 0 0 25px rgba(85,214,122,.05);
+    transform: scale(.2);
+    will-change: transform;
+}
+
+.resp-countdown {
+    margin-top: 23px;
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 300;
+    letter-spacing: 2px;
+    color: #d5dfe4;
+}
+
+.resp-countdown-unit {
+    margin-top: 8px;
+    font-size: 8px;
+    letter-spacing: 3px;
+    color: #53636d;
+}
+
+.resp-stats {
+    width: min(430px, 100%);
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 8px;
+    margin-top: 28px;
+}
+
+.resp-stat {
+    padding: 13px 8px;
+    text-align: center;
+    background: rgba(5,9,12,.76);
+    border: 1px solid rgba(130,155,170,.10);
+}
+
+.resp-stat-label {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: #596a75;
+    margin-bottom: 8px;
+}
+
+.resp-stat-value {
+    font-size: 15px;
+    color: #bdcbd2;
+}
+
+.resp-controls {
+    padding: 25px;
+    background: rgba(8,12,16,.74);
+    border: 1px solid rgba(130,155,170,.14);
+}
+
+.resp-section-label {
+    margin-bottom: 10px;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: #596b76;
+}
+
+.resp-select,
+.resp-input {
+    width: 100%;
+    border: 1px solid rgba(130,155,170,.18);
+    outline: none;
+    background: rgba(3,6,9,.9);
+    color: #cbd6dc;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 12px;
+}
+
+.resp-select {
+    padding: 13px 12px;
+    cursor: pointer;
+}
+
+.resp-input {
+    padding: 12px 10px;
+}
+
+.resp-select:focus,
+.resp-input:focus {
+    border-color: rgba(85,214,122,.42);
+    box-shadow: 0 0 14px rgba(85,214,122,.05);
+}
+
+.resp-fields {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.resp-field label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: #697983;
+}
+
+.resp-action {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0 18px;
+}
+
+.resp-start {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid rgba(85,214,122,.35);
+    background: rgba(10,20,15,.9);
+    color: #55d67a;
+    font-size: 11px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.resp-start:hover {
+    border-color: rgba(85,214,122,.65);
+    box-shadow: 0 0 18px rgba(85,214,122,.08);
+}
+
+.resp-start.running {
+    color: #d08b8b;
+    border-color: rgba(190,110,110,.38);
+    background: rgba(24,10,10,.72);
+}
+
+.resp-note {
+    padding-top: 15px;
+    border-top: 1px solid rgba(130,155,170,.10);
+    text-align: center;
+    font-size: 8px;
+    line-height: 1.7;
+    letter-spacing: 1px;
+    color: #46545d;
+}
+
+.resp-presets {
+    margin-top: 22px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(130,155,170,.10);
+}
+
+.resp-preset-info {
+    margin-top: 9px;
+    font-size: 8px;
+    line-height: 1.6;
+    letter-spacing: 1px;
+    color: #4f5f69;
+}
+
+@media (max-width:700px) {
+    .resp-main {
+        grid-template-columns: 1fr;
+    }
+
+    .resp-display {
+        min-height: 500px;
+        padding: 25px 15px;
+    }
+
+    .resp-orbit {
+        width: 250px;
+        height: 250px;
+    }
+
+    .resp-circle {
+        width: 112px;
+        height: 112px;
+    }
+
+    .resp-controls {
+        padding: 20px;
+    }
+
+    .resp-stats {
+        margin-top: 24px;
+    }
+}
+
+
 @media (max-width:700px) {
 
     .app {
@@ -677,6 +971,12 @@ body::before {
         <div class="module" data-module="replicator">
             <div class="module-number">MODULE 03</div>
             <div class="module-name">REPLICATOR</div>
+            <div class="module-status ready">READY</div>
+        </div>
+
+        <div class="module" data-module="respiration">
+            <div class="module-number">MODULE 04</div>
+            <div class="module-name">RESPIRATION CONTROL</div>
             <div class="module-status ready">READY</div>
         </div>
 
@@ -1130,6 +1430,131 @@ body::before {
 
 </section>
 
+
+<section class="module-panel" id="panel-respiration">
+
+    <div class="panel-header">
+        <div>
+            <div class="panel-title">RESPIRATION CONTROL</div>
+            <div class="panel-code">
+                MODULE 04 · BREATHING SEQUENCE SYSTEM
+            </div>
+        </div>
+
+        <button
+            class="back-button"
+            data-back
+            type="button"
+        >
+            BACK
+        </button>
+    </div>
+
+    <div class="resp-panel">
+
+        <div class="resp-status" id="respStatus">
+            SYSTEM READY · SELECT BREATHING PROFILE
+        </div>
+
+        <div class="resp-main">
+
+            <div class="resp-display">
+
+                <div class="resp-phase" id="respPhase">
+                    READY
+                </div>
+
+                <div class="resp-orbit">
+                    <div class="resp-progress" id="respProgress"></div>
+                    <div class="resp-circle" id="respCircle"></div>
+                </div>
+
+                <div class="resp-countdown" id="respCountdown">
+                    0
+                </div>
+
+                <div class="resp-countdown-unit">
+                    SECONDS
+                </div>
+
+                <div class="resp-stats">
+
+                    <div class="resp-stat">
+                        <div class="resp-stat-label">CYCLE</div>
+                        <div class="resp-stat-value" id="respCycleDuration">00:00</div>
+                    </div>
+
+                    <div class="resp-stat">
+                        <div class="resp-stat-label">BREATHS / MIN</div>
+                        <div class="resp-stat-value" id="respBreathsMin">0.00</div>
+                    </div>
+
+                    <div class="resp-stat">
+                        <div class="resp-stat-label">COMPLETED</div>
+                        <div class="resp-stat-value" id="respCompleted">0</div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="resp-controls">
+
+                <div class="resp-section-label">BREATHING PROFILE</div>
+
+                <select class="resp-select" id="respProfile">
+                    <option value="custom">CUSTOM / MANUAL</option>
+                    <option value="reset">01 — RESPIRATION RESET · 4 / 7 / 8 / 0</option>
+                    <option value="box">02 — BOX BREATHING · 4 / 4 / 4 / 4</option>
+                    <option value="deep">03 — DEEP PARASYMPATHETIC · 5 / 0 / 7 / 3</option>
+                </select>
+
+                <div class="resp-preset-info" id="respPresetInfo">
+                    MANUAL PHASE CONTROL
+                </div>
+
+                <div class="resp-fields">
+
+                    <div class="resp-field">
+                        <label for="respInhale">INHALE · SEC</label>
+                        <input id="respInhale" class="resp-input" type="number" min="0" max="60" step="1" value="4">
+                    </div>
+
+                    <div class="resp-field">
+                        <label for="respHoldFull">HOLD FULL · SEC</label>
+                        <input id="respHoldFull" class="resp-input" type="number" min="0" max="60" step="1" value="4">
+                    </div>
+
+                    <div class="resp-field">
+                        <label for="respExhale">EXHALE · SEC</label>
+                        <input id="respExhale" class="resp-input" type="number" min="0" max="60" step="1" value="4">
+                    </div>
+
+                    <div class="resp-field">
+                        <label for="respHoldEmpty">HOLD EMPTY · SEC</label>
+                        <input id="respHoldEmpty" class="resp-input" type="number" min="0" max="60" step="1" value="4">
+                    </div>
+
+                </div>
+
+                <div class="resp-action">
+                    <button class="resp-start" id="respStart" type="button">
+                        START SEQUENCE
+                    </button>
+                </div>
+
+                <div class="resp-note">
+                    SIMPLE BREATHING TIMER · NOT A MEDICAL DEVICE
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 </div>
 
 <script>
@@ -1160,7 +1585,13 @@ function playKey() {
     keySound.play().catch(() => {});
 }
 
+function stopRespirationIfActive() {
+    document.dispatchEvent(new Event("umbra-respiration-stop"));
+}
+
 function showStartScreen() {
+    stopRespirationIfActive();
+
     startupControls.style.display = "flex";
     moduleHome.style.display = "none";
 
@@ -1192,6 +1623,7 @@ function startSystem() {
 }
 
 function exitSystem() {
+    stopRespirationIfActive();
     playKey();
 
     outroSound.currentTime = 0;
@@ -1235,6 +1667,8 @@ function openModule(moduleName) {
 }
 
 function closeModulePanels() {
+
+    stopRespirationIfActive();
 
     panels.forEach(panel => {
         panel.style.display = "none";
@@ -1332,6 +1766,421 @@ document.querySelectorAll(".food-item").forEach(item => {
             " · " + time;
     });
 });
+
+
+/* =========================
+   MODULE 04 · RESPIRATION JS
+   ========================= */
+
+(() => {
+
+    const profileSelect = document.getElementById("respProfile");
+    const inhaleInput = document.getElementById("respInhale");
+    const holdFullInput = document.getElementById("respHoldFull");
+    const exhaleInput = document.getElementById("respExhale");
+    const holdEmptyInput = document.getElementById("respHoldEmpty");
+
+    const respStart = document.getElementById("respStart");
+    const respPhase = document.getElementById("respPhase");
+    const respCountdown = document.getElementById("respCountdown");
+    const respCycleDuration = document.getElementById("respCycleDuration");
+    const respBreathsMin = document.getElementById("respBreathsMin");
+    const respCompleted = document.getElementById("respCompleted");
+    const respStatus = document.getElementById("respStatus");
+    const respCircle = document.getElementById("respCircle");
+    const respProgress = document.getElementById("respProgress");
+    const respPresetInfo = document.getElementById("respPresetInfo");
+
+    const inhaleAudio = new Audio("einatmen.mp3");
+    const holdAudio = new Audio("halten.mp3");
+    const exhaleAudio = new Audio("ausatmen.mp3");
+
+    [inhaleAudio, holdAudio, exhaleAudio].forEach(audio => {
+        audio.preload = "auto";
+        audio.volume = 0.42;
+    });
+
+    const profiles = {
+        custom: {
+            values: [4,4,4,4],
+            info: "MANUAL PHASE CONTROL"
+        },
+        reset: {
+            values: [4,7,8,0],
+            info: "INHALE 4 · HOLD FULL 7 · EXHALE 8 · HOLD EMPTY 0"
+        },
+        box: {
+            values: [4,4,4,4],
+            info: "EQUAL FOUR-PHASE CYCLE · 4 / 4 / 4 / 4"
+        },
+        deep: {
+            values: [5,0,7,3],
+            info: "INHALE 5 · HOLD FULL 0 · EXHALE 7 · HOLD EMPTY 3"
+        }
+    };
+
+    let running = false;
+    let phaseIndex = 0;
+    let completed = 0;
+    let phaseTimer = null;
+    let countdownFrame = null;
+    let phaseDeadline = 0;
+
+    function readNumber(input) {
+        const value = Number(input.value);
+        return Number.isFinite(value) && value >= 0
+            ? Math.min(value, 60)
+            : 0;
+    }
+
+    function getValues() {
+        return [
+            readNumber(inhaleInput),
+            readNumber(holdFullInput),
+            readNumber(exhaleInput),
+            readNumber(holdEmptyInput)
+        ];
+    }
+
+    function buildSequence() {
+        const values = getValues();
+
+        return [
+            {
+                id: "inhale",
+                label: "INHALE",
+                duration: values[0],
+                startScale: 0.20,
+                endScale: 1.00,
+                audio: inhaleAudio
+            },
+            {
+                id: "holdFull",
+                label: "HOLD FULL",
+                duration: values[1],
+                startScale: 1.00,
+                endScale: 1.00,
+                audio: holdAudio
+            },
+            {
+                id: "exhale",
+                label: "EXHALE",
+                duration: values[2],
+                startScale: 1.00,
+                endScale: 0.20,
+                audio: exhaleAudio
+            },
+            {
+                id: "holdEmpty",
+                label: "HOLD EMPTY",
+                duration: values[3],
+                startScale: 0.20,
+                endScale: 0.20,
+                audio: null
+            }
+        ].filter(phase => phase.duration > 0);
+    }
+
+    function getCycleSeconds() {
+        return getValues().reduce((sum, value) => sum + value, 0);
+    }
+
+    function updateStats() {
+        const cycle = getCycleSeconds();
+
+        const minutes = Math.floor(cycle / 60);
+        const seconds = Math.round(cycle % 60);
+
+        respCycleDuration.textContent =
+            String(minutes).padStart(2, "0") +
+            ":" +
+            String(seconds).padStart(2, "0");
+
+        respBreathsMin.textContent =
+            cycle > 0
+                ? (60 / cycle).toFixed(2)
+                : "0.00";
+
+        respCompleted.textContent = completed;
+    }
+
+    function saveSettings() {
+        localStorage.setItem("umbraRespirationSettings", JSON.stringify({
+            profile: profileSelect.value,
+            inhale: inhaleInput.value,
+            holdFull: holdFullInput.value,
+            exhale: exhaleInput.value,
+            holdEmpty: holdEmptyInput.value
+        }));
+    }
+
+    function loadSettings() {
+        try {
+            const saved = JSON.parse(
+                localStorage.getItem("umbraRespirationSettings")
+            );
+
+            if (!saved) {
+                updateStats();
+                return;
+            }
+
+            if (profiles[saved.profile]) {
+                profileSelect.value = saved.profile;
+            }
+
+            if (saved.inhale !== undefined) inhaleInput.value = saved.inhale;
+            if (saved.holdFull !== undefined) holdFullInput.value = saved.holdFull;
+            if (saved.exhale !== undefined) exhaleInput.value = saved.exhale;
+            if (saved.holdEmpty !== undefined) holdEmptyInput.value = saved.holdEmpty;
+
+            updatePresetInfo();
+            updateStats();
+
+        } catch {
+            updateStats();
+        }
+    }
+
+    function updatePresetInfo() {
+        const profile = profiles[profileSelect.value] || profiles.custom;
+        respPresetInfo.textContent = profile.info;
+    }
+
+    function applyProfile() {
+        const profile = profiles[profileSelect.value];
+
+        if (!profile || profileSelect.value === "custom") {
+            updatePresetInfo();
+            updateStats();
+            saveSettings();
+            return;
+        }
+
+        [inhaleInput, holdFullInput, exhaleInput, holdEmptyInput]
+            .forEach((input, index) => {
+                input.value = profile.values[index];
+            });
+
+        updatePresetInfo();
+        updateStats();
+        saveSettings();
+    }
+
+    function stopAudio(audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
+
+    function stopAllAudio() {
+        stopAudio(inhaleAudio);
+        stopAudio(holdAudio);
+        stopAudio(exhaleAudio);
+    }
+
+    function playPhaseAudio(audio) {
+        stopAllAudio();
+
+        if (!audio) return;
+
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+    }
+
+    function updateCircle(progress, startScale, endScale, duration) {
+        const scale = startScale + (endScale - startScale) * progress;
+
+        respCircle.style.transition =
+            "transform " + Math.max(duration, 0.01) + "s linear";
+
+        respCircle.style.transform = "scale(" + scale + ")";
+
+        const degrees = Math.max(0, Math.min(360, progress * 360));
+
+        respProgress.style.background =
+            "conic-gradient(" +
+            "#55d67a 0deg, " +
+            "#55d67a " + degrees + "deg, " +
+            "rgba(85,214,122,.08) " + degrees + "deg, " +
+            "rgba(85,214,122,.04) 360deg)";
+    }
+
+    function updateCountdown() {
+        if (!running) return;
+
+        const remaining = Math.max(
+            0,
+            phaseDeadline - performance.now()
+        );
+
+        respCountdown.textContent =
+            Math.max(0.1, remaining / 1000).toFixed(1);
+
+        countdownFrame = requestAnimationFrame(updateCountdown);
+    }
+
+    function setInputsDisabled(disabled) {
+        [
+            profileSelect,
+            inhaleInput,
+            holdFullInput,
+            exhaleInput,
+            holdEmptyInput
+        ].forEach(input => {
+            input.disabled = disabled;
+        });
+    }
+
+    function startPhase() {
+        if (!running) return;
+
+        const sequence = buildSequence();
+
+        if (!sequence.length) {
+            stopSequence();
+            return;
+        }
+
+        if (phaseIndex >= sequence.length) {
+            phaseIndex = 0;
+            completed++;
+            updateStats();
+        }
+
+        const phase = sequence[phaseIndex];
+        const durationMs = phase.duration * 1000;
+
+        respPhase.textContent = phase.label;
+        respStatus.textContent =
+            "SEQUENCE ACTIVE · " + phase.label;
+
+        phaseDeadline = performance.now() + durationMs;
+
+        updateCircle(
+            0,
+            phase.startScale,
+            phase.endScale,
+            phase.duration
+        );
+
+        requestAnimationFrame(() => {
+            if (!running) return;
+            updateCircle(
+                1,
+                phase.startScale,
+                phase.endScale,
+                phase.duration
+            );
+        });
+
+        playPhaseAudio(phase.audio);
+
+        cancelAnimationFrame(countdownFrame);
+        updateCountdown();
+
+        clearTimeout(phaseTimer);
+
+        phaseTimer = setTimeout(() => {
+            phaseIndex++;
+            startPhase();
+        }, durationMs);
+    }
+
+    function startSequence() {
+        if (running) return;
+
+        const cycle = getCycleSeconds();
+
+        if (cycle <= 0) {
+            respStatus.textContent =
+                "SYSTEM HOLD · SET AT LEAST ONE PHASE";
+            return;
+        }
+
+        saveSettings();
+
+        running = true;
+        phaseIndex = 0;
+        completed = 0;
+
+        setInputsDisabled(true);
+
+        respStart.textContent = "STOP SEQUENCE";
+        respStart.classList.add("running");
+
+        respStatus.textContent = "SEQUENCE ACTIVE";
+        startPhase();
+    }
+
+    function stopSequence() {
+        running = false;
+
+        clearTimeout(phaseTimer);
+        cancelAnimationFrame(countdownFrame);
+
+        stopAllAudio();
+
+        phaseIndex = 0;
+
+        setInputsDisabled(false);
+
+        respStart.textContent = "START SEQUENCE";
+        respStart.classList.remove("running");
+
+        respPhase.textContent = "READY";
+        respCountdown.textContent = "0";
+        respStatus.textContent = "SYSTEM READY · SELECT BREATHING PROFILE";
+
+        respCircle.style.transition = "transform .35s ease";
+        respCircle.style.transform = "scale(.2)";
+
+        respProgress.style.background =
+            "conic-gradient(" +
+            "#55d67a 0deg, " +
+            "rgba(85,214,122,.08) 0deg, " +
+            "rgba(85,214,122,.04) 360deg)";
+
+        updateStats();
+    }
+
+    respStart.addEventListener("click", () => {
+        playKey();
+
+        if (running) {
+            stopSequence();
+        } else {
+            startSequence();
+        }
+    });
+
+    profileSelect.addEventListener("change", () => {
+        playKey();
+        applyProfile();
+    });
+
+    [
+        inhaleInput,
+        holdFullInput,
+        exhaleInput,
+        holdEmptyInput
+    ].forEach(input => {
+        input.addEventListener("input", () => {
+            profileSelect.value = "custom";
+            updatePresetInfo();
+            updateStats();
+            saveSettings();
+        });
+    });
+
+    document.addEventListener(
+        "umbra-respiration-stop",
+        stopSequence
+    );
+
+    loadSettings();
+
+})();
+
 
 showStartScreen();
 </script>

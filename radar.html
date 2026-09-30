@@ -13,12 +13,12 @@ body{display:flex;justify-content:center;align-items:center;background:radial-gr
 .header{padding:10px 13px}.title{font-size:clamp(13px,2vw,21px);font-weight:bold;letter-spacing:2px;text-shadow:0 0 8px rgba(0,255,70,.65)}
 .subtitle{margin-top:4px;font-size:10px;color:#62cc7a;letter-spacing:1px}
 .radar-wrap{position:relative;flex:1;min-height:0;display:flex;justify-content:center;align-items:center;border:1px solid #006f29;background:#010301;box-shadow:inset 0 0 45px rgba(0,255,70,.06);overflow:hidden}
-canvas{display:block;width:min(84vh,84vw,760px);height:min(84vh,84vw,760px);max-width:100%;max-height:100%}
+canvas{display:block;width:min(84vh,84vw,760px);height:min(84vh,84vw,760px);max-width:100%;max-height:100%;cursor:pointer;touch-action:none}
 .status{position:absolute;left:13px;top:11px;font-size:11px;line-height:1.55;color:#6cff8e;pointer-events:none;text-shadow:0 0 5px #00ff44}
 .alert{position:absolute;right:13px;top:11px;text-align:right;font-size:10px;line-height:1.5;color:#84908a;pointer-events:none}.alert span{color:#55d67a}
 .controls{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;font-size:10px;color:#55c96f}.controls-left{display:flex;gap:18px;flex-wrap:wrap}.legend{display:inline-flex;align-items:center;gap:6px}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;box-shadow:0 0 8px currentColor}
 button{font:inherit;font-weight:bold;color:#00ff55;background:#031006;border:1px solid #00aa38;padding:7px 12px;cursor:pointer;letter-spacing:1px}button:hover{background:#06200c;box-shadow:0 0 10px rgba(0,255,70,.25)}
-.scanline{position:fixed;inset:0;pointer-events:none;z-index:20;background:linear-gradient(to bottom,transparent 0%,rgba(0,255,70,.018) 50%,transparent 51%);background-size:100% 4px;mix-blend-mode:screen}
+.contact-panel{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;background:rgba(0,8,2,.78);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:5}.contact-panel.open{opacity:1;pointer-events:auto}.contact-box{width:min(88%,430px);border:1px solid #00aa38;background:rgba(1,10,3,.96);box-shadow:0 0 25px rgba(0,255,70,.18),inset 0 0 25px rgba(0,255,70,.05);padding:16px;color:#7cff99}.contact-title{font-weight:bold;letter-spacing:2px;color:#00ff55;margin-bottom:12px;text-shadow:0 0 8px rgba(0,255,70,.55)}.contact-row{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid rgba(0,255,70,.13);padding:6px 0;font-size:11px}.contact-row span:first-child{color:#668a70}.contact-row span:last-child{text-align:right;color:#c0ffd0}.contact-status{margin-top:12px;color:#00ff55;font-weight:bold}.contact-close{margin-top:14px;width:100%}.scanline{position:fixed;inset:0;pointer-events:none;z-index:20;background:linear-gradient(to bottom,transparent 0%,rgba(0,255,70,.018) 50%,transparent 51%);background-size:100% 4px;mix-blend-mode:screen}
 @media(max-width:600px){.umbra{width:98vw;height:98vh}.status,.alert{font-size:9px}.controls{font-size:8px}.controls-left{gap:8px}}
 </style>
 </head>
@@ -26,7 +26,7 @@ button{font:inherit;font-weight:bold;color:#00ff55;background:#031006;border:1px
 <div class="umbra">
   <div class="header">
     <div class="title">UMBRA GENETICS // BIOLOGICAL THREAT DETECTION SYSTEM</div>
-    <div class="subtitle">RADAR SUBSYSTEM // SIMULATION MODE // V0.3</div>
+    <div class="subtitle">RADAR SUBSYSTEM // SIMULATION MODE // V0.4</div>
   </div>
   <div class="radar-wrap">
     <canvas id="radarCanvas" width="760" height="760"></canvas>
@@ -38,6 +38,19 @@ button{font:inherit;font-weight:bold;color:#00ff55;background:#031006;border:1px
       DATABASE ...... <span id="dbReadout">0</span>
     </div>
     <div class="alert">MODE ........ <span>SIMULATION</span><br>THREAT LOGIC .. <span>ACTIVE</span></div>
+    <div id="contactPanel" class="contact-panel">
+      <div class="contact-box">
+        <div class="contact-title">CONTACT ANALYSIS</div>
+        <div class="contact-row"><span>ID</span><span id="infoId">—</span></div>
+        <div class="contact-row"><span>NAME</span><span id="infoName">—</span></div>
+        <div class="contact-row"><span>CATEGORY</span><span id="infoCategory">—</span></div>
+        <div class="contact-row"><span>THREAT LEVEL</span><span id="infoThreat">—</span></div>
+        <div class="contact-row"><span>MOVEMENT</span><span id="infoMovement">—</span></div>
+        <div class="contact-row"><span>SPECIAL EVENT</span><span id="infoSpecial">—</span></div>
+        <div class="contact-status">STATUS: DETECTED</div>
+        <button id="closeContact" class="contact-close" type="button">CLOSE</button>
+      </div>
+    </div>
   </div>
   <div class="controls">
     <div class="controls-left">
@@ -46,7 +59,7 @@ button{font:inherit;font-weight:bold;color:#00ff55;background:#031006;border:1px
       <span class="legend"><i class="dot" style="color:#ff0055"></i>ANOMALOUS</span>
       <span>UMBRA // SENSOR ARRAY A-01</span>
     </div>
-    <button id="soundButton" type="button">🔇 SOUND OFF</button>
+    <div style="display:flex;gap:8px;align-items:center"><button id="soundButton" type="button">🔇 SOUND OFF</button><button id="backButton" type="button">← BACK</button></div>
   </div>
 </div>
 <div class="scanline"></div>
@@ -77,10 +90,12 @@ const CONTACT_DATABASE = [
 ];
 
 const canvas=document.getElementById("radarCanvas"),ctx=canvas.getContext("2d");
-const angleReadout=document.getElementById("angleReadout"),contactReadout=document.getElementById("contactReadout"),dbReadout=document.getElementById("dbReadout"),soundButton=document.getElementById("soundButton");
+const angleReadout=document.getElementById("angleReadout"),contactReadout=document.getElementById("contactReadout"),dbReadout=document.getElementById("dbReadout"),soundButton=document.getElementById("soundButton"),backButton=document.getElementById("backButton");
+const contactPanel=document.getElementById("contactPanel"),closeContact=document.getElementById("closeContact"),infoId=document.getElementById("infoId"),infoName=document.getElementById("infoName"),infoCategory=document.getElementById("infoCategory"),infoThreat=document.getElementById("infoThreat"),infoMovement=document.getElementById("infoMovement"),infoSpecial=document.getElementById("infoSpecial");
 const SIZE=canvas.width,CX=SIZE/2,CY=SIZE/2,R=SIZE*.425;
 let angle=0,last=performance.now(),audioCtx=null,soundEnabled=false;
 const blips=[];const MAX_ACTIVE=8;
+let detectedCount=0;
 
 dbReadout.textContent=CONTACT_DATABASE.length;
 
@@ -124,12 +139,33 @@ function drawBlip(b,now){
  if(b.intensity<=0)return;const c=b.data,p=.65+.35*Math.sin(now*.006+b.phase),size=Math.max(1,c.size*.62+b.intensity*2+p),glow=8+b.intensity*18;
  ctx.save();ctx.shadowBlur=glow;ctx.shadowColor=c.color;ctx.fillStyle=c.color;ctx.beginPath();ctx.arc(b.x,b.y,size,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.18*b.intensity;ctx.beginPath();ctx.arc(b.x,b.y,10+b.intensity*12+p*3,0,Math.PI*2);ctx.fill();ctx.restore();
 }
+function canvasPoint(clientX,clientY){
+ const rect=canvas.getBoundingClientRect();
+ return {x:(clientX-rect.left)*(canvas.width/rect.width),y:(clientY-rect.top)*(canvas.height/rect.height)};
+}
+function showContact(c){
+ infoId.textContent=c.id.toUpperCase();infoName.textContent=c.name;infoCategory.textContent=c.category;infoThreat.textContent=c.threat;infoMovement.textContent=c.movement;infoSpecial.textContent=c.special||"NONE";contactPanel.classList.add("open");
+}
+function hideContact(){contactPanel.classList.remove("open");}
+function selectContact(clientX,clientY){
+ if(contactPanel.classList.contains("open"))return;
+ const p=canvasPoint(clientX,clientY);let selected=null,best=Infinity;
+ for(const b of blips){if(b.intensity<=0)continue;const distance=Math.hypot(p.x-b.x,p.y-b.y),hitRadius=Math.max(16,b.data.size*2.8);if(distance<=hitRadius&&distance<best){best=distance;selected=b;}}
+ if(selected)showContact(selected.data);
+}
+canvas.addEventListener("click",e=>selectContact(e.clientX,e.clientY));
+canvas.addEventListener("touchend",e=>{if(e.changedTouches.length){const t=e.changedTouches[0];selectContact(t.clientX,t.clientY)}},{passive:true});
+closeContact.addEventListener("click",hideContact);
+contactPanel.addEventListener("click",e=>{if(e.target===contactPanel)hideContact();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hideContact();});
+backButton.addEventListener("click",()=>{window.location.href="index.html";});
+
 function animate(now){
- const dt=Math.min(40,now-last);last=now;ctx.fillStyle='rgba(0,5,1,.13)';ctx.fillRect(0,0,SIZE,SIZE);grid();sweep();
- for(const b of blips){b.age+=dt;const dx=b.x-CX,dy=b.y-CY;b.angle=Math.atan2(dy,dx);const hit=diff(angle,b.angle)<.032;if(hit&&!b.detected){b.detected=true;b.intensity=1;ping(b.data)}if(diff(angle,b.angle)>.11)b.detected=false;if(b.intensity>0){drawBlip(b,now);b.intensity-=dt*.00105}}
+ const dt=Math.min(40,now-last);last=now;detectedCount=0;ctx.fillStyle='rgba(0,5,1,.13)';ctx.fillRect(0,0,SIZE,SIZE);grid();sweep();
+ for(const b of blips){b.age+=dt;const dx=b.x-CX,dy=b.y-CY;b.angle=Math.atan2(dy,dx);const hit=diff(angle,b.angle)<.032;if(hit&&!b.detected){b.detected=true;b.intensity=1;ping(b.data)}if(diff(angle,b.angle)>.11)b.detected=false;if(b.intensity>0){detectedCount++;drawBlip(b,now);b.intensity-=dt*.00020}}
  while(blips.length<MAX_ACTIVE)blips.push(newBlip());
  angle+=dt*.00065;if(angle>Math.PI*2)angle-=Math.PI*2;
- angleReadout.textContent=String(Math.round((angle*180/Math.PI+360)%360)).padStart(3,'0')+'°';contactReadout.textContent=blips.length;requestAnimationFrame(animate)
+ angleReadout.textContent=String(Math.round((angle*180/Math.PI+360)%360)).padStart(3,'0')+'°';contactReadout.textContent=detectedCount;requestAnimationFrame(animate)
 }
 seed();requestAnimationFrame(animate);
 </script>

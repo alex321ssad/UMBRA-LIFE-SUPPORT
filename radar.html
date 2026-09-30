@@ -82,7 +82,7 @@ const CONTACT_DATABASE = [
  {id:"c07_visitor",name:"Door-to-door visitor",category:"HUMANOID_EXTERNAL",spawnWeight:25,color:"#94a3b8",size:5,glow:"rgba(148,163,184,.1)",movement:"HESITANT_WALK",threat:"1_LOW",special:null},
  {id:"c08_neighbor_cat",name:"Free-roaming neighbor cat",category:"FELINE_UNAUTHORIZED",spawnWeight:40,color:"#ef4444",size:4,glow:"rgba(239,68,68,.15)",movement:"LOW_PROFILE_CRAWL",threat:"2_MEDIUM",special:"TERRITORIAL_DISPUTE"},
  {id:"c09_tiffany_mother_vacuum",name:"Tiffany's mother with vacuum cleaner",category:"ENVIRONMENTAL_DISRUPTION",spawnWeight:30,color:"#a855f7",size:8,glow:"rgba(168,85,247,.4)",movement:"SYSTEMATIC_GRID_COVERAGE",threat:"3_HIGH",special:"FELINE_VACUUM_PANIC"},
- {id:"c10_xenomorph",name:"Xenomorph",category:"ANOMALOUS_BIO_HAZARD",spawnWeight:100,color:"#ff0055",size:9,glow:"rgba(255,0,85,.6)",movement:"CEILING_VENT_DASH",threat:"5_FATAL",special:"LLOYD_DOG_DEFENSE"},
+ {id:"c10_xenomorph",name:"Xenomorph",category:"ANOMALOUS_BIO_HAZARD",spawnWeight:5,color:"#ff0055",size:9,glow:"rgba(255,0,85,.6)",movement:"CEILING_VENT_DASH",threat:"5_FATAL",special:"LLOYD_DOG_DEFENSE"},
  {id:"c11_alien",name:"Alien",category:"ANOMALOUS_EXTRATERRESTRIAL",spawnWeight:2,color:"#00ffff",size:6,glow:"rgba(0,255,255,.4)",movement:"STACCATO_BLINK",threat:"4_CRITICAL",special:"ABDUCTION_SCAN"},
  {id:"c12_unknown_organism",name:"Unknown organism",category:"ANOMALOUS_UNIDENTIFIED",spawnWeight:3,color:"#eab308",size:5,glow:"rgba(234,179,8,.3)",movement:"OOZING_EXPANSION",threat:"3_HIGH",special:null},
  {id:"c13_mutated_specimen",name:"Mutated specimen",category:"ANOMALOUS_MUTATION",spawnWeight:3,color:"#22c55e",size:7,glow:"rgba(34,197,94,.4)",movement:"LUMBERING_THUD",threat:"3_HIGH",special:"CONTAINMENT_BREACH"},
@@ -142,10 +142,55 @@ function sweep(){
 }
 function diff(a,b){let d=Math.abs(a-b);return d>Math.PI?Math.PI*2-d:d}
 function drawBlip(b,now){
- if(b.intensity<=0)return;const c=b.data,p=.65+.35*Math.sin(now*.006+b.phase),size=Math.max(1,c.size*.62+b.intensity*2+p),glow=8+b.intensity*18;
- ctx.save();ctx.shadowBlur=glow;ctx.shadowColor=c.color;ctx.fillStyle=c.color;ctx.beginPath();ctx.arc(b.x,b.y,size,0,Math.PI*2);ctx.fill();
- if(b===hoveredBlip){ctx.globalAlpha=.8;ctx.strokeStyle=c.color;ctx.lineWidth=1.5;ctx.shadowBlur=12;ctx.beginPath();ctx.arc(b.x,b.y,size+7,0,Math.PI*2);ctx.stroke()}
- ctx.globalAlpha=.18*b.intensity;ctx.beginPath();ctx.arc(b.x,b.y,10+b.intensity*12+p*3,0,Math.PI*2);ctx.fill();ctx.restore();
+ if(b.intensity<=0)return;
+
+ const c=b.data;
+ const p=.65+.35*Math.sin(now*.006+b.phase);
+ const size=Math.max(1,c.size*.62+b.intensity*2+p);
+ const glow=8+b.intensity*18;
+
+ ctx.save();
+
+ // Blip
+ ctx.shadowBlur=glow;
+ ctx.shadowColor=c.color;
+ ctx.fillStyle=c.color;
+ ctx.beginPath();
+ ctx.arc(b.x,b.y,size,0,Math.PI*2);
+ ctx.fill();
+
+ // Hover ring
+ if(b===hoveredBlip){
+   ctx.globalAlpha=.8;
+   ctx.strokeStyle=c.color;
+   ctx.lineWidth=1.5;
+   ctx.shadowBlur=12;
+   ctx.beginPath();
+   ctx.arc(b.x,b.y,size+7,0,Math.PI*2);
+   ctx.stroke();
+ }
+
+ // Blip glow
+ ctx.globalAlpha=.18*b.intensity;
+ ctx.beginPath();
+ ctx.arc(b.x,b.y,10+b.intensity*12+p*3,0,Math.PI*2);
+ ctx.fill();
+
+ // Permanent contact label
+ ctx.globalAlpha=1;
+ ctx.shadowBlur=7;
+ ctx.shadowColor=c.color;
+ ctx.fillStyle=c.color;
+ ctx.font='bold 15px "Courier New", monospace';
+ ctx.textAlign='left';
+ ctx.textBaseline='middle';
+
+ const labelX=b.x+size+10;
+ const labelY=b.y-2;
+
+ ctx.fillText(c.name.toUpperCase(),labelX,labelY);
+
+ ctx.restore();
 }
 function canvasPoint(clientX,clientY){
  const rect=canvas.getBoundingClientRect();
@@ -153,7 +198,7 @@ function canvasPoint(clientX,clientY){
 }
 function findBlipAt(clientX,clientY){
  const p=canvasPoint(clientX,clientY);let selected=null,best=Infinity;
- for(const b of blips){if(b.intensity<=0)continue;const distance=Math.hypot(p.x-b.x,p.y-b.y),hitRadius=Math.max(18,b.data.size*3.2);if(distance<=hitRadius&&distance<best){best=distance;selected=b;}}
+ for(const b of blips){if(b.intensity<=0)continue;const distance=Math.hypot(p.x-b.x,p.y-b.y),hitRadius=Math.max(30,b.data.size*4.5);if(distance<=hitRadius&&distance<best){best=distance;selected=b;}}
  return selected;
 }
 function showTooltip(b,clientX,clientY){

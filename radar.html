@@ -162,10 +162,10 @@ backButton.addEventListener("click",()=>{window.location.href="index.html";});
 
 function animate(now){
  const dt=Math.min(40,now-last);last=now;detectedCount=0;ctx.fillStyle='rgba(0,5,1,.13)';ctx.fillRect(0,0,SIZE,SIZE);grid();sweep();
- for(const b of blips){b.age+=dt;const dx=b.x-CX,dy=b.y-CY;b.angle=Math.atan2(dy,dx);const hit=diff(angle,b.angle)<.032;if(hit&&!b.detected){b.detected=true;b.intensity=1;ping(b.data)}if(diff(angle,b.angle)>.11)b.detected=false;if(b.intensity>0){detectedCount++;drawBlip(b,now);b.intensity-=dt*.00105}}
+ for(const b of blips){b.age+=dt;const dx=b.x-CX,dy=b.y-CY;b.angle=Math.atan2(dy,dx);const hit=diff(angle,b.angle)<.032;if(hit&&!b.detected){b.detected=true;b.intensity=1;ping(b.data)}if(diff(angle,b.angle)>.11)b.detected=false;if(b.intensity>0){detectedCount++;drawBlip(b,now);b.intensity-=dt*.00020}}
  while(blips.length<MAX_ACTIVE)blips.push(newBlip());
  angle+=dt*.00065;if(angle>Math.PI*2)angle-=Math.PI*2;
- angleReadout.textContent=String(Math.round((angle*180/Math.PI+360)%360)).padStart(3,'0')+'°';contactReadout.textContent=blips.length;requestAnimationFrame(animate)
+ angleReadout.textContent=String(Math.round((angle*180/Math.PI+360)%360)).padStart(3,'0')+'°';contactReadout.textContent=detectedCount;requestAnimationFrame(animate)
 }
 seed();requestAnimationFrame(animate);
 </script>

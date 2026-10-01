@@ -4,66 +4,405 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>UMBRA GENETICS — Biological Threat Detection System</title>
+
 <style>
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020402;color:#00ff55;font-family:"Courier New",monospace}
-body{display:flex;justify-content:center;align-items:center;background:radial-gradient(circle at center,rgba(0,255,80,.045),transparent 55%),#020402}
-.umbra{width:min(96vw,980px);height:min(96vh,980px);display:flex;flex-direction:column;gap:10px}
-.header,.controls{border:1px solid #007d30;background:rgba(0,20,5,.78);box-shadow:0 0 14px rgba(0,255,70,.12)}
-.header{padding:10px 13px}.title{font-size:clamp(13px,2vw,21px);font-weight:bold;letter-spacing:2px;text-shadow:0 0 8px rgba(0,255,70,.65)}
-.subtitle{margin-top:4px;font-size:10px;color:#62cc7a;letter-spacing:1px}
-.radar-wrap{position:relative;flex:1;min-height:0;display:flex;justify-content:center;align-items:center;border:1px solid #006f29;background:#010301;box-shadow:inset 0 0 45px rgba(0,255,70,.06);overflow:hidden}
-canvas{display:block;width:min(84vh,84vw,760px);height:min(84vh,84vw,760px);max-width:100%;max-height:100%;cursor:pointer;touch-action:none}
-.status{position:absolute;left:13px;top:11px;font-size:11px;line-height:1.55;color:#6cff8e;pointer-events:none;text-shadow:0 0 5px #00ff44}
-.alert{position:absolute;right:13px;top:11px;text-align:right;font-size:10px;line-height:1.5;color:#84908a;pointer-events:none}.alert span{color:#55d67a}
-.controls{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 10px;font-size:10px;color:#55c96f}.controls-left{display:flex;gap:18px;flex-wrap:wrap}.legend{display:inline-flex;align-items:center;gap:6px}.dot{width:7px;height:7px;border-radius:50%;display:inline-block;box-shadow:0 0 8px currentColor}
-button{font:inherit;font-weight:bold;color:#00ff55;background:#031006;border:1px solid #00aa38;padding:7px 12px;cursor:pointer;letter-spacing:1px}button:hover{background:#06200c;box-shadow:0 0 10px rgba(0,255,70,.25)}
-.contact-panel{position:absolute;inset:0;display:flex;justify-content:center;align-items:center;background:rgba(0,8,2,.78);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .18s ease;z-index:5}.contact-panel.open{opacity:1;pointer-events:auto}.contact-box{width:min(88%,430px);border:1px solid #00aa38;background:rgba(1,10,3,.96);box-shadow:0 0 25px rgba(0,255,70,.18),inset 0 0 25px rgba(0,255,70,.05);padding:16px;color:#7cff99}.contact-title{font-weight:bold;letter-spacing:2px;color:#00ff55;margin-bottom:12px;text-shadow:0 0 8px rgba(0,255,70,.55)}.contact-row{display:flex;justify-content:space-between;gap:18px;border-bottom:1px solid rgba(0,255,70,.13);padding:6px 0;font-size:11px}.contact-row span:first-child{color:#668a70}.contact-row span:last-child{text-align:right;color:#c0ffd0}.contact-status{margin-top:12px;color:#00ff55;font-weight:bold}.contact-close{margin-top:14px;width:100%}.radar-tooltip{position:absolute;z-index:4;display:none;min-width:170px;max-width:250px;padding:7px 9px;border:1px solid rgba(0,255,70,.65);background:rgba(1,10,3,.94);box-shadow:0 0 14px rgba(0,255,70,.18),inset 0 0 10px rgba(0,255,70,.04);color:#b8ffc8;font-size:10px;line-height:1.45;letter-spacing:.4px;pointer-events:none;white-space:nowrap}.radar-tooltip.visible{display:block}.radar-tooltip .tt-name{color:#00ff55;font-weight:bold;letter-spacing:1px}.radar-tooltip .tt-threat{color:#f59e0b}.scanline{position:fixed;inset:0;pointer-events:none;z-index:20;background:linear-gradient(to bottom,transparent 0%,rgba(0,255,70,.018) 50%,transparent 51%);background-size:100% 4px;mix-blend-mode:screen}
-@media(max-width:600px){.umbra{width:98vw;height:98vh}.status,.alert{font-size:9px}.controls{font-size:8px}.controls-left{gap:8px}}
+
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#020402;
+    color:#00ff55;
+    font-family:"Courier New",monospace
+}
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(circle at center,rgba(0,255,80,.045),transparent 55%),
+        #020402
+}
+
+.umbra{
+    width:min(96vw,980px);
+    height:min(96vh,980px);
+    display:flex;
+    flex-direction:column;
+    gap:10px
+}
+
+.header,.controls{
+    border:1px solid #007d30;
+    background:rgba(0,20,5,.78);
+    box-shadow:0 0 14px rgba(0,255,70,.12)
+}
+
+.header{padding:10px 13px}
+
+.title{
+    font-size:clamp(13px,2vw,21px);
+    font-weight:bold;
+    letter-spacing:2px;
+    text-shadow:0 0 8px rgba(0,255,70,.65)
+}
+
+.subtitle{
+    margin-top:4px;
+    font-size:10px;
+    color:#62cc7a;
+    letter-spacing:1px
+}
+
+.radar-wrap{
+    position:relative;
+    flex:1;
+    min-height:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border:1px solid #006f29;
+    background:#010301;
+    box-shadow:inset 0 0 45px rgba(0,255,70,.06);
+    overflow:hidden
+}
+
+canvas{
+    display:block;
+    width:min(84vh,84vw,760px);
+    height:min(84vh,84vw,760px);
+    max-width:100%;
+    max-height:100%;
+    cursor:pointer;
+    touch-action:none
+}
+
+.status{
+    position:absolute;
+    left:13px;
+    top:11px;
+    font-size:11px;
+    line-height:1.55;
+    color:#6cff8e;
+    pointer-events:none;
+    text-shadow:0 0 5px #00ff44
+}
+
+.alert{
+    position:absolute;
+    right:13px;
+    top:11px;
+    text-align:right;
+    font-size:10px;
+    line-height:1.5;
+    color:#84908a;
+    pointer-events:none
+}
+
+.alert span{color:#55d67a}
+
+.controls{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+    padding:8px 10px;
+    font-size:10px;
+    color:#55c96f
+}
+
+.controls-left{
+    display:flex;
+    gap:18px;
+    flex-wrap:wrap
+}
+
+.legend{
+    display:inline-flex;
+    align-items:center;
+    gap:6px
+}
+
+.dot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    display:inline-block;
+    box-shadow:0 0 8px currentColor
+}
+
+button{
+    font:inherit;
+    font-weight:bold;
+    color:#00ff55;
+    background:#031006;
+    border:1px solid #00aa38;
+    padding:7px 12px;
+    cursor:pointer;
+    letter-spacing:1px
+}
+
+button:hover{
+    background:#06200c;
+    box-shadow:0 0 10px rgba(0,255,70,.25)
+}
+
+.contact-panel{
+    position:absolute;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(0,8,2,.78);
+    backdrop-filter:blur(2px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .18s ease;
+    z-index:5
+}
+
+.contact-panel.open{
+    opacity:1;
+    pointer-events:auto
+}
+
+.contact-box{
+    width:min(88%,430px);
+    border:1px solid #00aa38;
+    background:rgba(1,10,3,.96);
+    box-shadow:
+        0 0 25px rgba(0,255,70,.18),
+        inset 0 0 25px rgba(0,255,70,.05);
+    padding:16px;
+    color:#7cff99
+}
+
+.contact-title{
+    font-weight:bold;
+    letter-spacing:2px;
+    color:#00ff55;
+    margin-bottom:12px;
+    text-shadow:0 0 8px rgba(0,255,70,.55)
+}
+
+.contact-row{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+    border-bottom:1px solid rgba(0,255,70,.13);
+    padding:6px 0;
+    font-size:11px
+}
+
+.contact-row span:first-child{color:#668a70}
+
+.contact-row span:last-child{
+    text-align:right;
+    color:#c0ffd0
+}
+
+.contact-status{
+    margin-top:12px;
+    color:#00ff55;
+    font-weight:bold
+}
+
+.contact-close{
+    margin-top:14px;
+    width:100%
+}
+
+.radar-tooltip{
+    position:absolute;
+    z-index:4;
+    display:none;
+    min-width:170px;
+    max-width:250px;
+    padding:7px 9px;
+    border:1px solid rgba(0,255,70,.65);
+    background:rgba(1,10,3,.94);
+    box-shadow:
+        0 0 14px rgba(0,255,70,.18),
+        inset 0 0 10px rgba(0,255,70,.04);
+    color:#b8ffc8;
+    font-size:10px;
+    line-height:1.45;
+    letter-spacing:.4px;
+    pointer-events:none;
+    white-space:nowrap
+}
+
+.radar-tooltip.visible{display:block}
+
+.radar-tooltip .tt-name{
+    color:#00ff55;
+    font-weight:bold;
+    letter-spacing:1px
+}
+
+.radar-tooltip .tt-threat{color:#f59e0b}
+
+.scanline{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:20;
+    background:
+        linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(0,255,70,.018) 50%,
+            transparent 51%
+        );
+    background-size:100% 4px;
+    mix-blend-mode:screen
+}
+
+@media(max-width:600px){
+    .umbra{
+        width:98vw;
+        height:98vh
+    }
+
+    .status,.alert{font-size:9px}
+
+    .controls{font-size:8px}
+
+    .controls-left{gap:8px}
+}
 </style>
 </head>
+
 <body>
+
 <div class="umbra">
-  <div class="header">
-    <div class="title">UMBRA GENETICS // BIOLOGICAL THREAT DETECTION SYSTEM</div>
-    <div class="subtitle">RADAR SUBSYSTEM // SIMULATION MODE // V0.4</div>
-  </div>
-  <div class="radar-wrap" id="radarWrap">
-    <canvas id="radarCanvas" width="760" height="760"></canvas>
-    <div id="radarTooltip" class="radar-tooltip"></div>
-    <div class="status">
-      SYSTEM ........ ONLINE<br>
-      RADAR ......... ACTIVE<br>
-      SWEEP ......... <span id="angleReadout">000°</span><br>
-      CONTACTS ...... <span id="contactReadout">0</span><br>
-      DATABASE ...... <span id="dbReadout">0</span>
+
+    <div class="header">
+        <div class="title">
+            UMBRA GENETICS // BIOLOGICAL THREAT DETECTION SYSTEM
+        </div>
+
+        <div class="subtitle">
+            RADAR SUBSYSTEM // SIMULATION MODE // V0.4
+        </div>
     </div>
-    <div class="alert">MODE ........ <span>SIMULATION</span><br>THREAT LOGIC .. <span>ACTIVE</span></div>
-    <div id="contactPanel" class="contact-panel">
-      <div class="contact-box">
-        <div class="contact-title">CONTACT ANALYSIS</div>
-        <div class="contact-row"><span>ID</span><span id="infoId">—</span></div>
-        <div class="contact-row"><span>NAME</span><span id="infoName">—</span></div>
-        <div class="contact-row"><span>CATEGORY</span><span id="infoCategory">—</span></div>
-        <div class="contact-row"><span>THREAT LEVEL</span><span id="infoThreat">—</span></div>
-        <div class="contact-row"><span>MOVEMENT</span><span id="infoMovement">—</span></div>
-        <div class="contact-row"><span>SPECIAL EVENT</span><span id="infoSpecial">—</span></div>
-        <div class="contact-status">STATUS: DETECTED</div>
-        <button id="closeContact" class="contact-close" type="button">CLOSE</button>
-      </div>
+
+    <div class="radar-wrap" id="radarWrap">
+
+        <canvas id="radarCanvas" width="760" height="760"></canvas>
+
+        <div id="radarTooltip" class="radar-tooltip"></div>
+
+        <div class="status">
+            SYSTEM ........ ONLINE<br>
+            RADAR ......... ACTIVE<br>
+            SWEEP ......... <span id="angleReadout">000°</span><br>
+            CONTACTS ...... <span id="contactReadout">0</span><br>
+            DATABASE ...... <span id="dbReadout">0</span>
+        </div>
+
+        <div class="alert">
+            MODE ........ <span>SIMULATION</span><br>
+            THREAT LOGIC .. <span>ACTIVE</span>
+        </div>
+
+        <div id="contactPanel" class="contact-panel">
+
+            <div class="contact-box">
+
+                <div class="contact-title">
+                    CONTACT ANALYSIS
+                </div>
+
+                <div class="contact-row">
+                    <span>ID</span>
+                    <span id="infoId">—</span>
+                </div>
+
+                <div class="contact-row">
+                    <span>NAME</span>
+                    <span id="infoName">—</span>
+                </div>
+
+                <div class="contact-row">
+                    <span>CATEGORY</span>
+                    <span id="infoCategory">—</span>
+                </div>
+
+                <div class="contact-row">
+                    <span>THREAT LEVEL</span>
+                    <span id="infoThreat">—</span>
+                </div>
+
+                <div class="contact-row">
+                    <span>MOVEMENT</span>
+                    <span id="infoMovement">—</span>
+                </div>
+
+                <div class="contact-row">
+                    <span>SPECIAL EVENT</span>
+                    <span id="infoSpecial">—</span>
+                </div>
+
+                <div class="contact-status">
+                    STATUS: DETECTED
+                </div>
+
+                <button id="closeContact" class="contact-close" type="button">
+                    CLOSE
+                </button>
+
+            </div>
+        </div>
+
     </div>
-  </div>
-  <div class="controls">
-    <div class="controls-left">
-      <span class="legend"><i class="dot" style="color:#10b981"></i>DOMESTIC</span>
-      <span class="legend"><i class="dot" style="color:#f59e0b"></i>LOGISTICS</span>
-      <span class="legend"><i class="dot" style="color:#ff0055"></i>ANOMALOUS</span>
-      <span>UMBRA // SENSOR ARRAY A-01</span>
+
+    <div class="controls">
+
+        <div class="controls-left">
+
+            <span class="legend">
+                <i class="dot" style="color:#10b981"></i>
+                DOMESTIC
+            </span>
+
+            <span class="legend">
+                <i class="dot" style="color:#f59e0b"></i>
+                LOGISTICS
+            </span>
+
+            <span class="legend">
+                <i class="dot" style="color:#ff0055"></i>
+                ANOMALOUS
+            </span>
+
+            <span>
+                UMBRA // SENSOR ARRAY A-01
+            </span>
+
+        </div>
+
+        <div style="display:flex;gap:8px;align-items:center">
+
+            <button id="soundButton" type="button">
+                🔇 SOUND OFF
+            </button>
+
+            <button id="backButton" type="button">
+                ← BACK
+            </button>
+
+        </div>
+
     </div>
-    <div style="display:flex;gap:8px;align-items:center"><button id="soundButton" type="button">🔇 SOUND OFF</button><button id="backButton" type="button">← BACK</button></div>
-  </div>
+
 </div>
+
 <div class="scanline"></div>
+
 <script>
 "use strict";
 
@@ -72,172 +411,1600 @@ button{font:inherit;font-weight:bold;color:#00ff55;background:#031006;border:1px
    Remove a contact here if it should no longer exist.
    The radar itself does not need to be changed.
    ========================================================== */
+
 const CONTACT_DATABASE = [
- {id:"c01_pickles",name:"Pickles",category:"FELINE_DOMESTIC",spawnWeight:75,color:"#10b981",size:4,glow:"rgba(16,185,129,.2)",movement:"STEALTH_PULSE",threat:"0_NONE",special:null},
- {id:"c02_fritz",name:"Fritz",category:"FELINE_DOMESTIC",spawnWeight:70,color:"#10b981",size:5,glow:"rgba(16,185,129,.2)",movement:"WADDLE_DIRECT",threat:"0_NONE",special:"HUNGER_BOXING_SEQUENCE"},
- {id:"c03_babycat",name:"Babycat",category:"FELINE_DOMESTIC",spawnWeight:75,color:"#10b981",size:4,glow:"rgba(16,185,129,.2)",movement:"RANDOM_ZIGZAG",threat:"0_NONE",special:null},
- {id:"c04_lloyd",name:"Lloyd",category:"CANINE_DOMESTIC",spawnWeight:80,color:"#38bdf8",size:7,glow:"rgba(56,189,248,.3)",movement:"BOUNDING_PATROL",threat:"1_LOW",special:"XENOMORPH_DISMISSAL"},
- {id:"c05_amazon_driver",name:"Amazon Delivery Driver",category:"HUMANOID_LOGISTICS",spawnWeight:50,color:"#f59e0b",size:6,glow:"rgba(245,158,11,.2)",movement:"SPRINT_TO_DOOR",threat:"0_NONE",special:"DELIVERY_ALERT"},
- {id:"c06_dhl_driver",name:"DHL Delivery Driver",category:"HUMANOID_LOGISTICS",spawnWeight:50,color:"#f59e0b",size:6,glow:"rgba(245,158,11,.2)",movement:"SPRINT_TO_DOOR",threat:"0_NONE",special:"DELIVERY_ALERT"},
- {id:"c07_visitor",name:"Door-to-door visitor",category:"HUMANOID_EXTERNAL",spawnWeight:25,color:"#94a3b8",size:5,glow:"rgba(148,163,184,.1)",movement:"HESITANT_WALK",threat:"1_LOW",special:null},
- {id:"c08_neighbor_cat",name:"Free-roaming neighbor cat",category:"FELINE_UNAUTHORIZED",spawnWeight:40,color:"#ef4444",size:4,glow:"rgba(239,68,68,.15)",movement:"LOW_PROFILE_CRAWL",threat:"2_MEDIUM",special:"TERRITORIAL_DISPUTE"},
- {id:"c09_tiffany_mother_vacuum",name:"Tiffany's mother with vacuum cleaner",category:"ENVIRONMENTAL_DISRUPTION",spawnWeight:30,color:"#a855f7",size:8,glow:"rgba(168,85,247,.4)",movement:"SYSTEMATIC_GRID_COVERAGE",threat:"3_HIGH",special:"FELINE_VACUUM_PANIC"},
- {id:"c10_xenomorph",name:"Xenomorph",category:"ANOMALOUS_BIO_HAZARD",spawnWeight:5,color:"#ff0055",size:9,glow:"rgba(255,0,85,.6)",movement:"CEILING_VENT_DASH",threat:"5_FATAL",special:"LLOYD_DOG_DEFENSE"},
- {id:"c11_alien",name:"Alien",category:"ANOMALOUS_EXTRATERRESTRIAL",spawnWeight:2,color:"#00ffff",size:6,glow:"rgba(0,255,255,.4)",movement:"STACCATO_BLINK",threat:"4_CRITICAL",special:"ABDUCTION_SCAN"},
- {id:"c12_unknown_organism",name:"Unknown organism",category:"ANOMALOUS_UNIDENTIFIED",spawnWeight:3,color:"#eab308",size:5,glow:"rgba(234,179,8,.3)",movement:"OOZING_EXPANSION",threat:"3_HIGH",special:null},
- {id:"c13_mutated_specimen",name:"Mutated specimen",category:"ANOMALOUS_MUTATION",spawnWeight:3,color:"#22c55e",size:7,glow:"rgba(34,197,94,.4)",movement:"LUMBERING_THUD",threat:"3_HIGH",special:"CONTAINMENT_BREACH"},
- {id:"c14_unclassified_entity",name:"Unclassified entity",category:"ANOMALOUS_UNKNOWN",spawnWeight:2,color:"#6366f1",size:5,glow:"rgba(99,102,241,.5)",movement:"QUANTUM_REVERSE",threat:"4_CRITICAL",special:"TEMPORAL_FLICKER"},
- {id:"c15_raccoon",name:"Raccoon",category:"ANOMALOUS_WILDLIFE",spawnWeight:5,color:"#fb923c",size:5,glow:"rgba(251,146,60,.2)",movement:"ERRATIC_CAUTIOUS",threat:"2_MEDIUM",special:"TRASH_RAID"}
+
+    {
+        id:"c01_pickles",
+        name:"Pickles",
+        category:"FELINE_DOMESTIC",
+        spawnWeight:75,
+        color:"#10b981",
+        size:4,
+        glow:"rgba(16,185,129,.2)",
+        movement:"STEALTH_PULSE",
+        threat:"0_NONE",
+        special:null
+    },
+
+    {
+        id:"c02_fritz",
+        name:"Fritz",
+        category:"FELINE_DOMESTIC",
+        spawnWeight:70,
+        color:"#10b981",
+        size:5,
+        glow:"rgba(16,185,129,.2)",
+        movement:"WADDLE_DIRECT",
+        threat:"0_NONE",
+        special:"HUNGER_BOXING_SEQUENCE"
+    },
+
+    {
+        id:"c03_babycat",
+        name:"Babycat",
+        category:"FELINE_DOMESTIC",
+        spawnWeight:75,
+        color:"#10b981",
+        size:4,
+        glow:"rgba(16,185,129,.2)",
+        movement:"RANDOM_ZIGZAG",
+        threat:"0_NONE",
+        special:null
+    },
+
+    {
+        id:"c04_lloyd",
+        name:"Lloyd",
+        category:"CANINE_DOMESTIC",
+        spawnWeight:80,
+        color:"#38bdf8",
+        size:7,
+        glow:"rgba(56,189,248,.3)",
+        movement:"BOUNDING_PATROL",
+        threat:"1_LOW",
+        special:"XENOMORPH_DISMISSAL"
+    },
+
+    {
+        id:"c05_amazon_driver",
+        name:"Amazon Delivery Driver",
+        category:"HUMANOID_LOGISTICS",
+        spawnWeight:50,
+        color:"#f59e0b",
+        size:6,
+        glow:"rgba(245,158,11,.2)",
+        movement:"SPRINT_TO_DOOR",
+        threat:"0_NONE",
+        special:"DELIVERY_ALERT"
+    },
+
+    {
+        id:"c06_dhl_driver",
+        name:"DHL Delivery Driver",
+        category:"HUMANOID_LOGISTICS",
+        spawnWeight:50,
+        color:"#f59e0b",
+        size:6,
+        glow:"rgba(245,158,11,.2)",
+        movement:"SPRINT_TO_DOOR",
+        threat:"0_NONE",
+        special:"DELIVERY_ALERT"
+    },
+
+    {
+        id:"c07_visitor",
+        name:"Door-to-door visitor",
+        category:"HUMANOID_EXTERNAL",
+        spawnWeight:25,
+        color:"#94a3b8",
+        size:5,
+        glow:"rgba(148,163,184,.1)",
+        movement:"HESITANT_WALK",
+        threat:"1_LOW",
+        special:null
+    },
+
+    {
+        id:"c08_neighbor_cat",
+        name:"Free-roaming neighbor cat",
+        category:"FELINE_UNAUTHORIZED",
+        spawnWeight:40,
+        color:"#ef4444",
+        size:4,
+        glow:"rgba(239,68,68,.15)",
+        movement:"LOW_PROFILE_CRAWL",
+        threat:"2_MEDIUM",
+        special:"TERRITORIAL_DISPUTE"
+    },
+
+    {
+        id:"c09_tiffany_mother_vacuum",
+        name:"Tiffany's mother with vacuum cleaner",
+        category:"ENVIRONMENTAL_DISRUPTION",
+        spawnWeight:30,
+        color:"#a855f7",
+        size:8,
+        glow:"rgba(168,85,247,.4)",
+        movement:"SYSTEMATIC_GRID_COVERAGE",
+        threat:"3_HIGH",
+        special:"FELINE_VACUUM_PANIC"
+    },
+
+    {
+        id:"c10_xenomorph",
+        name:"Xenomorph",
+        category:"ANOMALOUS_BIO_HAZARD",
+        spawnWeight:5,
+        color:"#ff0055",
+        size:9,
+        glow:"rgba(255,0,85,.6)",
+        movement:"CEILING_VENT_DASH",
+        threat:"5_FATAL",
+        special:"LLOYD_DOG_DEFENSE"
+    },
+
+    {
+        id:"c11_alien",
+        name:"Alien",
+        category:"ANOMALOUS_EXTRATERRESTRIAL",
+        spawnWeight:2,
+        color:"#00ffff",
+        size:6,
+        glow:"rgba(0,255,255,.4)",
+        movement:"STACCATO_BLINK",
+        threat:"4_CRITICAL",
+        special:"ABDUCTION_SCAN"
+    },
+
+    {
+        id:"c12_unknown_organism",
+        name:"Unknown organism",
+        category:"ANOMALOUS_UNIDENTIFIED",
+        spawnWeight:3,
+        color:"#eab308",
+        size:5,
+        glow:"rgba(234,179,8,.3)",
+        movement:"OOZING_EXPANSION",
+        threat:"3_HIGH",
+        special:null
+    },
+
+    {
+        id:"c13_mutated_specimen",
+        name:"Mutated specimen",
+        category:"ANOMALOUS_MUTATION",
+        spawnWeight:3,
+        color:"#22c55e",
+        size:7,
+        glow:"rgba(34,197,94,.4)",
+        movement:"LUMBERING_THUD",
+        threat:"3_HIGH",
+        special:"CONTAINMENT_BREACH"
+    },
+
+    {
+        id:"c14_unclassified_entity",
+        name:"Unclassified entity",
+        category:"ANOMALOUS_UNKNOWN",
+        spawnWeight:2,
+        color:"#6366f1",
+        size:5,
+        glow:"rgba(99,102,241,.5)",
+        movement:"QUANTUM_REVERSE",
+        threat:"4_CRITICAL",
+        special:"TEMPORAL_FLICKER"
+    },
+
+    {
+        id:"c15_raccoon",
+        name:"Raccoon",
+        category:"ANOMALOUS_WILDLIFE",
+        spawnWeight:5,
+        color:"#fb923c",
+        size:5,
+        glow:"rgba(251,146,60,.2)",
+        movement:"ERRATIC_CAUTIOUS",
+        threat:"2_MEDIUM",
+        special:"TRASH_RAID"
+    }
 ];
 
-const canvas=document.getElementById("radarCanvas"),ctx=canvas.getContext("2d"),radarWrap=document.getElementById("radarWrap"),radarTooltip=document.getElementById("radarTooltip");
-const angleReadout=document.getElementById("angleReadout"),contactReadout=document.getElementById("contactReadout"),dbReadout=document.getElementById("dbReadout"),soundButton=document.getElementById("soundButton"),backButton=document.getElementById("backButton");
-const contactPanel=document.getElementById("contactPanel"),closeContact=document.getElementById("closeContact"),infoId=document.getElementById("infoId"),infoName=document.getElementById("infoName"),infoCategory=document.getElementById("infoCategory"),infoThreat=document.getElementById("infoThreat"),infoMovement=document.getElementById("infoMovement"),infoSpecial=document.getElementById("infoSpecial");
-const SIZE=canvas.width,CX=SIZE/2,CY=SIZE/2,R=SIZE*.425;
-let angle=0,last=performance.now(),audioCtx=null,soundEnabled=false,hoveredBlip=null;
-const blips=[];const MAX_ACTIVE=8;
+
+/* ==========================================================
+   CORE
+   ========================================================== */
+
+const canvas=document.getElementById("radarCanvas");
+const ctx=canvas.getContext("2d");
+
+const radarWrap=document.getElementById("radarWrap");
+const radarTooltip=document.getElementById("radarTooltip");
+
+const angleReadout=document.getElementById("angleReadout");
+const contactReadout=document.getElementById("contactReadout");
+const dbReadout=document.getElementById("dbReadout");
+
+const soundButton=document.getElementById("soundButton");
+const backButton=document.getElementById("backButton");
+
+const contactPanel=document.getElementById("contactPanel");
+const closeContact=document.getElementById("closeContact");
+
+const infoId=document.getElementById("infoId");
+const infoName=document.getElementById("infoName");
+const infoCategory=document.getElementById("infoCategory");
+const infoThreat=document.getElementById("infoThreat");
+const infoMovement=document.getElementById("infoMovement");
+const infoSpecial=document.getElementById("infoSpecial");
+
+const SIZE=canvas.width;
+const CX=SIZE/2;
+const CY=SIZE/2;
+const R=SIZE*.425;
+
+let angle=0;
+let last=performance.now();
+
+let audioCtx=null;
+let soundEnabled=false;
+let hoveredBlip=null;
+
+const blips=[];
+const MAX_ACTIVE=8;
+
 let detectedCount=0;
 
 dbReadout.textContent=CONTACT_DATABASE.length;
 
+
+/* ==========================================================
+   CONTACT SPAWNING
+   ========================================================== */
+
 function weightedContact(){
- const available=CONTACT_DATABASE.filter(c=>!blips.some(b=>b.data===c));
- if(!available.length)return null;
- let total=available.reduce((s,c)=>s+c.spawnWeight,0),r=Math.random()*total;
- for(const c of available){r-=c.spawnWeight;if(r<=0)return c}
- return available[available.length-1];
+
+    const available=
+        CONTACT_DATABASE.filter(
+            c=>!blips.some(b=>b.data===c)
+        );
+
+    if(!available.length)return null;
+
+    let total=
+        available.reduce(
+            (s,c)=>s+c.spawnWeight,
+            0
+        );
+
+    let r=Math.random()*total;
+
+    for(const c of available){
+
+        r-=c.spawnWeight;
+
+        if(r<=0)return c;
+    }
+
+    return available[available.length-1];
 }
+
+
 function newBlip(){
- const c=weightedContact();
- if(!c)return null;
- const a=Math.random()*Math.PI*2,d=R*(.12+Math.random()*.8);
- return {data:c,x:CX+Math.cos(a)*d,y:CY+Math.sin(a)*d,angle:a,distance:d,intensity:0,detected:false,age:0,phase:Math.random()*10};
+
+    const c=weightedContact();
+
+    if(!c)return null;
+
+    const a=Math.random()*Math.PI*2;
+    const d=R*(.12+Math.random()*.8);
+
+    return {
+        data:c,
+        x:CX+Math.cos(a)*d,
+        y:CY+Math.sin(a)*d,
+
+        angle:a,
+        distance:d,
+
+        intensity:0,
+        detected:false,
+        age:0,
+        phase:Math.random()*10,
+
+        /* Movement state */
+        vx:0,
+        vy:0,
+        moveTimer:500+Math.random()*2000,
+        dashCooldown:3000+Math.random()*5000,
+        dashActive:0
+    };
 }
-function addBlip(){const b=newBlip();if(b)blips.push(b)}
-function seed(){blips.length=0;for(let i=0;i<MAX_ACTIVE;i++)addBlip()}
+
+
+function addBlip(){
+
+    const b=newBlip();
+
+    if(b)blips.push(b);
+}
+
+
+function seed(){
+
+    blips.length=0;
+
+    for(let i=0;i<MAX_ACTIVE;i++){
+        addBlip();
+    }
+}
+
+
+/* ==========================================================
+   AUDIO
+   ========================================================== */
+
 function initAudio(){
- if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
- if(audioCtx.state==='suspended')audioCtx.resume();
- soundEnabled=!soundEnabled;soundButton.textContent=soundEnabled?'🔊 SOUND ON':'🔇 SOUND OFF';
+
+    if(!audioCtx){
+        audioCtx=
+            new(window.AudioContext||window.webkitAudioContext)();
+    }
+
+    if(audioCtx.state==="suspended"){
+        audioCtx.resume();
+    }
+
+    soundEnabled=!soundEnabled;
+
+    soundButton.textContent=
+        soundEnabled
+            ?"🔊 SOUND ON"
+            :"🔇 SOUND OFF";
 }
-soundButton.addEventListener('click',initAudio);
+
+
+soundButton.addEventListener("click",initAudio);
+
+
 function ping(contact){
- if(!soundEnabled||!audioCtx)return;
- const o=audioCtx.createOscillator(),g=audioCtx.createGain();
- o.type='sine';o.frequency.setValueAtTime(contact.category.includes('ANOMALOUS')?1100:760,audioCtx.currentTime);
- o.frequency.exponentialRampToValueAtTime(320,audioCtx.currentTime+.42);
- g.gain.setValueAtTime(.0001,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.22,audioCtx.currentTime+.012);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.62);
- o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.65);
+
+    if(!soundEnabled||!audioCtx)return;
+
+    const o=audioCtx.createOscillator();
+    const g=audioCtx.createGain();
+
+    o.type="sine";
+
+    o.frequency.setValueAtTime(
+        contact.category.includes("ANOMALOUS")
+            ?1100
+            :760,
+        audioCtx.currentTime
+    );
+
+    o.frequency.exponentialRampToValueAtTime(
+        320,
+        audioCtx.currentTime+.42
+    );
+
+    g.gain.setValueAtTime(
+        .0001,
+        audioCtx.currentTime
+    );
+
+    g.gain.exponentialRampToValueAtTime(
+        .22,
+        audioCtx.currentTime+.012
+    );
+
+    g.gain.exponentialRampToValueAtTime(
+        .0001,
+        audioCtx.currentTime+.62
+    );
+
+    o.connect(g);
+    g.connect(audioCtx.destination);
+
+    o.start();
+    o.stop(audioCtx.currentTime+.65);
 }
+
+
+/* ==========================================================
+   RADAR GRAPHICS
+   ========================================================== */
+
 function grid(){
- ctx.save();ctx.lineWidth=1;ctx.strokeStyle='rgba(0,255,70,.20)';
- for(let i=1;i<=4;i++){ctx.beginPath();ctx.arc(CX,CY,R*i/4,0,Math.PI*2);ctx.stroke()}
- for(let i=0;i<8;i++){let a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(CX+Math.cos(a)*R,CY+Math.sin(a)*R);ctx.stroke()}
- ctx.strokeStyle='rgba(0,255,70,.42)';ctx.beginPath();ctx.arc(CX,CY,R,0,Math.PI*2);ctx.stroke();
- ctx.fillStyle='#00ff55';ctx.shadowBlur=12;ctx.shadowColor='#00ff44';ctx.beginPath();ctx.arc(CX,CY,3.5,0,Math.PI*2);ctx.fill();ctx.restore();
+
+    ctx.save();
+
+    ctx.lineWidth=1;
+    ctx.strokeStyle="rgba(0,255,70,.20)";
+
+    for(let i=1;i<=4;i++){
+
+        ctx.beginPath();
+        ctx.arc(
+            CX,
+            CY,
+            R*i/4,
+            0,
+            Math.PI*2
+        );
+        ctx.stroke();
+    }
+
+    for(let i=0;i<8;i++){
+
+        let a=i*Math.PI/4;
+
+        ctx.beginPath();
+
+        ctx.moveTo(CX,CY);
+
+        ctx.lineTo(
+            CX+Math.cos(a)*R,
+            CY+Math.sin(a)*R
+        );
+
+        ctx.stroke();
+    }
+
+    ctx.strokeStyle="rgba(0,255,70,.42)";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        CX,
+        CY,
+        R,
+        0,
+        Math.PI*2
+    );
+
+    ctx.stroke();
+
+    ctx.fillStyle="#00ff55";
+    ctx.shadowBlur=12;
+    ctx.shadowColor="#00ff44";
+
+    ctx.beginPath();
+
+    ctx.arc(
+        CX,
+        CY,
+        3.5,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+    ctx.restore();
 }
+
+
 function sweep(){
- const x=CX+Math.cos(angle)*R,y=CY+Math.sin(angle)*R,g=ctx.createLinearGradient(CX,CY,x,y);g.addColorStop(0,'rgba(0,255,70,.02)');g.addColorStop(.72,'rgba(0,255,70,.10)');g.addColorStop(1,'rgba(0,255,70,.78)');
- ctx.save();ctx.strokeStyle=g;ctx.lineWidth=2;ctx.shadowBlur=12;ctx.shadowColor='#00ff44';ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(x,y);ctx.stroke();ctx.restore();
+
+    const x=CX+Math.cos(angle)*R;
+    const y=CY+Math.sin(angle)*R;
+
+    const g=ctx.createLinearGradient(
+        CX,
+        CY,
+        x,
+        y
+    );
+
+    g.addColorStop(
+        0,
+        "rgba(0,255,70,.02)"
+    );
+
+    g.addColorStop(
+        .72,
+        "rgba(0,255,70,.10)"
+    );
+
+    g.addColorStop(
+        1,
+        "rgba(0,255,70,.78)"
+    );
+
+    ctx.save();
+
+    ctx.strokeStyle=g;
+    ctx.lineWidth=2;
+    ctx.shadowBlur=12;
+    ctx.shadowColor="#00ff44";
+
+    ctx.beginPath();
+
+    ctx.moveTo(CX,CY);
+    ctx.lineTo(x,y);
+
+    ctx.stroke();
+
+    ctx.restore();
 }
-function diff(a,b){let d=Math.abs(a-b);return d>Math.PI?Math.PI*2-d:d}
+
+
+function diff(a,b){
+
+    let d=Math.abs(a-b);
+
+    return d>Math.PI
+        ?Math.PI*2-d
+        :d;
+}
+
+
+/* ==========================================================
+   CONTACT MOVEMENT
+   ========================================================== */
+
+function updateMovement(b,dt,now){
+
+    const c=b.data;
+
+    const speedFactor=dt*.025;
+
+    let dx=b.x-CX;
+    let dy=b.y-CY;
+
+    let dist=Math.hypot(dx,dy);
+
+    if(b.vx===undefined){
+
+        const a=Math.random()*Math.PI*2;
+
+        b.vx=Math.cos(a);
+        b.vy=Math.sin(a);
+
+        b.moveTimer=
+            1000+
+            Math.random()*2500;
+
+        b.dashCooldown=
+            2500+
+            Math.random()*5000;
+    }
+
+    b.moveTimer-=dt;
+    b.dashCooldown-=dt;
+
+
+    switch(c.movement){
+
+        /* --------------------------------------------------
+           PICKLES
+           -------------------------------------------------- */
+
+        case "STEALTH_PULSE":
+
+            b.vx+=(Math.random()-.5)*.025;
+            b.vy+=(Math.random()-.5)*.025;
+
+            break;
+
+
+        /* --------------------------------------------------
+           FRITZ
+           -------------------------------------------------- */
+
+        case "WADDLE_DIRECT":
+
+            b.vx+=(Math.random()-.5)*.008;
+            b.vy+=(Math.random()-.5)*.008;
+
+            break;
+
+
+        /* --------------------------------------------------
+           BABYCAT
+           -------------------------------------------------- */
+
+        case "RANDOM_ZIGZAG":
+
+            if(b.moveTimer<=0){
+
+                b.vx=Math.random()*2-1;
+                b.vy=Math.random()*2-1;
+
+                b.moveTimer=
+                    350+
+                    Math.random()*700;
+            }
+
+            break;
+
+
+        /* --------------------------------------------------
+           LLOYD
+           -------------------------------------------------- */
+
+        case "BOUNDING_PATROL":
+
+            b.vx+=(Math.random()-.5)*.018;
+            b.vy+=(Math.random()-.5)*.018;
+
+            break;
+
+
+        /* --------------------------------------------------
+           DELIVERY DRIVERS
+           -------------------------------------------------- */
+
+        case "SPRINT_TO_DOOR":
+
+            if(dist>10){
+
+                b.vx+=
+                    dx/dist*.018;
+
+                b.vy+=
+                    dy/dist*.018;
+            }
+
+            break;
+
+
+        /* --------------------------------------------------
+           VISITOR
+           -------------------------------------------------- */
+
+        case "HESITANT_WALK":
+
+            b.vx+=(Math.random()-.5)*.012;
+            b.vy+=(Math.random()-.5)*.012;
+
+            break;
+
+
+        /* --------------------------------------------------
+           NEIGHBOR CAT
+           -------------------------------------------------- */
+
+        case "LOW_PROFILE_CRAWL":
+
+            b.vx*=.995;
+            b.vy*=.995;
+
+            b.vx+=(Math.random()-.5)*.008;
+            b.vy+=(Math.random()-.5)*.008;
+
+            break;
+
+
+        /* --------------------------------------------------
+           TIFFANY'S MOTHER WITH VACUUM
+           -------------------------------------------------- */
+
+        case "SYSTEMATIC_GRID_COVERAGE":
+
+            if(b.moveTimer<=0){
+
+                if(
+                    Math.abs(b.vx)>
+                    Math.abs(b.vy)
+                ){
+
+                    b.vx=-b.vx;
+
+                }else{
+
+                    b.vy=-b.vy;
+                }
+
+                b.moveTimer=
+                    900+
+                    Math.random()*1300;
+            }
+
+            break;
+
+
+        /* --------------------------------------------------
+           XENOMORPH
+           -------------------------------------------------- */
+
+        case "CEILING_VENT_DASH":
+
+            /*
+             * Xenomorph stays relatively calm,
+             * then suddenly performs a fast dash.
+             */
+
+            b.vx*=.985;
+            b.vy*=.985;
+
+            if(b.dashCooldown<=0){
+
+                const a=
+                    Math.random()*Math.PI*2;
+
+                b.vx=
+                    Math.cos(a)*4.5;
+
+                b.vy=
+                    Math.sin(a)*4.5;
+
+                b.dashCooldown=
+                    3500+
+                    Math.random()*6000;
+
+                b.dashActive=450;
+            }
+
+            if(b.dashActive>0){
+
+                b.dashActive-=dt;
+            }
+
+            break;
+
+
+        /* --------------------------------------------------
+           ALIEN
+           -------------------------------------------------- */
+
+        case "STACCATO_BLINK":
+
+            if(b.moveTimer<=0){
+
+                const a=
+                    Math.random()*Math.PI*2;
+
+                const jump=
+                    15+
+                    Math.random()*35;
+
+                b.x+=
+                    Math.cos(a)*jump;
+
+                b.y+=
+                    Math.sin(a)*jump;
+
+                b.moveTimer=
+                    700+
+                    Math.random()*1400;
+            }
+
+            b.vx*=.92;
+            b.vy*=.92;
+
+            break;
+
+
+        /* --------------------------------------------------
+           UNKNOWN ORGANISM
+           -------------------------------------------------- */
+
+        case "OOZING_EXPANSION":
+
+            b.vx*=.998;
+            b.vy*=.998;
+
+            b.vx+=(Math.random()-.5)*.004;
+            b.vy+=(Math.random()-.5)*.004;
+
+            break;
+
+
+        /* --------------------------------------------------
+           MUTATED SPECIMEN
+           -------------------------------------------------- */
+
+        case "LUMBERING_THUD":
+
+            if(b.moveTimer<=0){
+
+                const a=
+                    Math.random()*Math.PI*2;
+
+                b.vx=
+                    Math.cos(a)*.45;
+
+                b.vy=
+                    Math.sin(a)*.45;
+
+                b.moveTimer=
+                    1200+
+                    Math.random()*1800;
+            }
+
+            break;
+
+
+        /* --------------------------------------------------
+           UNCLASSIFIED ENTITY
+           -------------------------------------------------- */
+
+        case "QUANTUM_REVERSE":
+
+            if(b.moveTimer<=0){
+
+                b.vx*=-1;
+                b.vy*=-1;
+
+                b.moveTimer=
+                    500+
+                    Math.random()*1200;
+            }
+
+            break;
+
+
+        /* --------------------------------------------------
+           RACCOON
+           -------------------------------------------------- */
+
+        case "ERRATIC_CAUTIOUS":
+
+            if(b.moveTimer<=0){
+
+                b.vx=
+                    Math.random()*1.2-.6;
+
+                b.vy=
+                    Math.random()*1.2-.6;
+
+                b.moveTimer=
+                    400+
+                    Math.random()*900;
+            }
+
+            break;
+    }
+
+
+    /* ======================================================
+       NORMALIZE SPEED
+       ====================================================== */
+
+    const v=Math.hypot(
+        b.vx,
+        b.vy
+    );
+
+    if(v>0){
+
+        let maxSpeed=1;
+
+        if(
+            c.movement==="CEILING_VENT_DASH" &&
+            b.dashActive>0
+        ){
+
+            maxSpeed=4.5;
+
+        }else if(
+            c.movement==="BOUNDING_PATROL"
+        ){
+
+            maxSpeed=1.35;
+
+        }else if(
+            c.movement==="SPRINT_TO_DOOR"
+        ){
+
+            maxSpeed=1.5;
+
+        }else if(
+            c.movement==="WADDLE_DIRECT"
+        ){
+
+            maxSpeed=.55;
+
+        }else if(
+            c.movement==="LUMBERING_THUD"
+        ){
+
+            maxSpeed=.45;
+
+        }else{
+
+            maxSpeed=.75;
+        }
+
+        b.vx=
+            (b.vx/v)*
+            maxSpeed;
+
+        b.vy=
+            (b.vy/v)*
+            maxSpeed;
+    }
+
+
+    /* ======================================================
+       APPLY MOVEMENT
+       ====================================================== */
+
+    b.x+=b.vx*speedFactor;
+    b.y+=b.vy*speedFactor;
+
+
+    /* ======================================================
+       KEEP CONTACT INSIDE RADAR
+       ====================================================== */
+
+    dx=b.x-CX;
+    dy=b.y-CY;
+
+    dist=Math.hypot(dx,dy);
+
+    const safeRadius=R-18;
+
+    if(dist>safeRadius){
+
+        const nx=dx/dist;
+        const ny=dy/dist;
+
+        b.x=
+            CX+
+            nx*safeRadius;
+
+        b.y=
+            CY+
+            ny*safeRadius;
+
+        /*
+         * Bounce back toward the center.
+         */
+
+        const dot=
+            b.vx*nx+
+            b.vy*ny;
+
+        if(dot>0){
+
+            b.vx-=
+                2*dot*nx;
+
+            b.vy-=
+                2*dot*ny;
+        }
+    }
+}
+
+
+/* ==========================================================
+   BLIP DRAWING
+   ========================================================== */
+
 function drawBlip(b,now){
- if(b.intensity<=0)return;
 
- const c=b.data;
- const p=.65+.35*Math.sin(now*.006+b.phase);
- const size=Math.max(1,c.size*.62+b.intensity*2+p);
- const glow=8+b.intensity*18;
+    if(b.intensity<=0)return;
 
- ctx.save();
+    const c=b.data;
 
- // Blip
- ctx.shadowBlur=glow;
- ctx.shadowColor=c.color;
- ctx.fillStyle=c.color;
- ctx.beginPath();
- ctx.arc(b.x,b.y,size,0,Math.PI*2);
- ctx.fill();
+    const p=
+        .65+
+        .35*
+        Math.sin(
+            now*.006+
+            b.phase
+        );
 
- // Hover ring
- if(b===hoveredBlip){
-   ctx.globalAlpha=.8;
-   ctx.strokeStyle=c.color;
-   ctx.lineWidth=1.5;
-   ctx.shadowBlur=12;
-   ctx.beginPath();
-   ctx.arc(b.x,b.y,size+7,0,Math.PI*2);
-   ctx.stroke();
- }
+    const size=
+        Math.max(
+            1,
+            c.size*.62+
+            b.intensity*2+
+            p
+        );
 
- // Blip glow
- ctx.globalAlpha=.18*b.intensity;
- ctx.beginPath();
- ctx.arc(b.x,b.y,10+b.intensity*12+p*3,0,Math.PI*2);
- ctx.fill();
+    const glow=
+        8+
+        b.intensity*18;
 
- // Permanent contact label
- ctx.globalAlpha=1;
- ctx.shadowBlur=7;
- ctx.shadowColor=c.color;
- ctx.fillStyle=c.color;
- ctx.font='bold 15px "Courier New", monospace';
- ctx.textAlign='left';
- ctx.textBaseline='middle';
+    ctx.save();
 
- const labelX=b.x+size+10;
- const labelY=b.y-2;
 
- ctx.fillText(c.name.toUpperCase(),labelX,labelY);
+    /* Blip */
 
- ctx.restore();
+    ctx.shadowBlur=glow;
+    ctx.shadowColor=c.color;
+    ctx.fillStyle=c.color;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        b.x,
+        b.y,
+        size,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* Hover ring */
+
+    if(b===hoveredBlip){
+
+        ctx.globalAlpha=.8;
+
+        ctx.strokeStyle=c.color;
+        ctx.lineWidth=1.5;
+
+        ctx.shadowBlur=12;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            b.x,
+            b.y,
+            size+7,
+            0,
+            Math.PI*2
+        );
+
+        ctx.stroke();
+    }
+
+
+    /* Blip glow */
+
+    ctx.globalAlpha=
+        .18*b.intensity;
+
+    ctx.beginPath();
+
+    ctx.arc(
+        b.x,
+        b.y,
+        10+
+        b.intensity*12+
+        p*3,
+        0,
+        Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    /* Permanent contact label */
+
+    ctx.globalAlpha=1;
+
+    ctx.shadowBlur=7;
+    ctx.shadowColor=c.color;
+
+    ctx.fillStyle=c.color;
+
+    ctx.font=
+        'bold 15px "Courier New", monospace';
+
+    ctx.textAlign="left";
+    ctx.textBaseline="middle";
+
+    const labelX=
+        b.x+
+        size+
+        10;
+
+    const labelY=
+        b.y-2;
+
+    ctx.fillText(
+        c.name.toUpperCase(),
+        labelX,
+        labelY
+    );
+
+    ctx.restore();
 }
+
+
+/* ==========================================================
+   CANVAS / TOUCH COORDINATES
+   ========================================================== */
+
 function canvasPoint(clientX,clientY){
- const rect=canvas.getBoundingClientRect();
- return {x:(clientX-rect.left)*(canvas.width/rect.width),y:(clientY-rect.top)*(canvas.height/rect.height)};
+
+    const rect=
+        canvas.getBoundingClientRect();
+
+    return {
+        x:
+            (clientX-rect.left)*
+            (canvas.width/rect.width),
+
+        y:
+            (clientY-rect.top)*
+            (canvas.height/rect.height)
+    };
 }
+
+
 function findBlipAt(clientX,clientY){
- const p=canvasPoint(clientX,clientY);let selected=null,best=Infinity;
- for(const b of blips){if(b.intensity<=0)continue;const distance=Math.hypot(p.x-b.x,p.y-b.y),hitRadius=Math.max(30,b.data.size*4.5);if(distance<=hitRadius&&distance<best){best=distance;selected=b;}}
- return selected;
+
+    const p=
+        canvasPoint(
+            clientX,
+            clientY
+        );
+
+    let selected=null;
+    let best=Infinity;
+
+    for(const b of blips){
+
+        if(b.intensity<=0)continue;
+
+        const distance=
+            Math.hypot(
+                p.x-b.x,
+                p.y-b.y
+            );
+
+        const hitRadius=
+            Math.max(
+                30,
+                b.data.size*4.5
+            );
+
+        if(
+            distance<=hitRadius &&
+            distance<best
+        ){
+
+            best=distance;
+            selected=b;
+        }
+    }
+
+    return selected;
 }
-function showTooltip(b,clientX,clientY){
- if(!b){radarTooltip.classList.remove("visible");hoveredBlip=null;return}
- hoveredBlip=b;
- radarTooltip.innerHTML='<div class="tt-name">CONTACT: '+b.data.name.toUpperCase()+'</div><div>CATEGORY: '+b.data.category+'</div><div class="tt-threat">THREAT: '+b.data.threat+'</div>';
- const wrapRect=radarWrap.getBoundingClientRect(),canvasRect=canvas.getBoundingClientRect(),p=canvasPoint(clientX,clientY);
- let left=canvasRect.left-wrapRect.left+(p.x/canvas.width)*canvasRect.width+14;
- let top=canvasRect.top-wrapRect.top+(p.y/canvas.height)*canvasRect.height+14;
- radarTooltip.style.left=Math.max(4,Math.min(left,wrapRect.width-255))+'px';
- radarTooltip.style.top=Math.max(4,Math.min(top,wrapRect.height-82))+'px';
- radarTooltip.classList.add("visible");
+
+
+/* ==========================================================
+   TOOLTIP
+   ========================================================== */
+
+function showTooltip(
+    b,
+    clientX,
+    clientY
+){
+
+    if(!b){
+
+        radarTooltip.classList.remove(
+            "visible"
+        );
+
+        hoveredBlip=null;
+
+        return;
+    }
+
+    hoveredBlip=b;
+
+    radarTooltip.innerHTML=
+        '<div class="tt-name">CONTACT: '+
+        b.data.name.toUpperCase()+
+        '</div>'+
+        '<div>CATEGORY: '+
+        b.data.category+
+        '</div>'+
+        '<div class="tt-threat">THREAT: '+
+        b.data.threat+
+        '</div>';
+
+    const wrapRect=
+        radarWrap.getBoundingClientRect();
+
+    const canvasRect=
+        canvas.getBoundingClientRect();
+
+    const p=
+        canvasPoint(
+            clientX,
+            clientY
+        );
+
+    let left=
+        canvasRect.left-
+        wrapRect.left+
+        (p.x/canvas.width)*
+        canvasRect.width+
+        14;
+
+    let top=
+        canvasRect.top-
+        wrapRect.top+
+        (p.y/canvas.height)*
+        canvasRect.height+
+        14;
+
+    radarTooltip.style.left=
+        Math.max(
+            4,
+            Math.min(
+                left,
+                wrapRect.width-255
+            )
+        )+
+        "px";
+
+    radarTooltip.style.top=
+        Math.max(
+            4,
+            Math.min(
+                top,
+                wrapRect.height-82
+            )
+        )+
+        "px";
+
+    radarTooltip.classList.add(
+        "visible"
+    );
 }
+
+
+/* ==========================================================
+   CONTACT PANEL
+   ========================================================== */
+
 function showContact(c){
- infoId.textContent=c.id.toUpperCase();infoName.textContent=c.name;infoCategory.textContent=c.category;infoThreat.textContent=c.threat;infoMovement.textContent=c.movement;infoSpecial.textContent=c.special||"NONE";contactPanel.classList.add("open");radarTooltip.classList.remove("visible");hoveredBlip=null;
+
+    infoId.textContent=
+        c.id.toUpperCase();
+
+    infoName.textContent=
+        c.name;
+
+    infoCategory.textContent=
+        c.category;
+
+    infoThreat.textContent=
+        c.threat;
+
+    infoMovement.textContent=
+        c.movement;
+
+    infoSpecial.textContent=
+        c.special||"NONE";
+
+    contactPanel.classList.add(
+        "open"
+    );
+
+    radarTooltip.classList.remove(
+        "visible"
+    );
+
+    hoveredBlip=null;
 }
-function hideContact(){contactPanel.classList.remove("open");}
-function selectContact(clientX,clientY){
- if(contactPanel.classList.contains("open"))return;
- const selected=findBlipAt(clientX,clientY);
- if(selected)showContact(selected.data);
+
+
+function hideContact(){
+
+    contactPanel.classList.remove(
+        "open"
+    );
 }
-canvas.addEventListener("click",e=>selectContact(e.clientX,e.clientY));
-canvas.addEventListener("mousemove",e=>{if(!contactPanel.classList.contains("open"))showTooltip(findBlipAt(e.clientX,e.clientY),e.clientX,e.clientY)});
-canvas.addEventListener("mouseleave",()=>{radarTooltip.classList.remove("visible");hoveredBlip=null});
-canvas.addEventListener("touchend",e=>{if(e.changedTouches.length){const t=e.changedTouches[0];selectContact(t.clientX,t.clientY)}},{passive:true});
-closeContact.addEventListener("click",hideContact);
-contactPanel.addEventListener("click",e=>{if(e.target===contactPanel)hideContact();});
-document.addEventListener("keydown",e=>{if(e.key==="Escape")hideContact();});
-backButton.addEventListener("click",()=>{window.location.href="index.html";});
+
+
+function selectContact(
+    clientX,
+    clientY
+){
+
+    if(
+        contactPanel.classList.contains(
+            "open"
+        )
+    )return;
+
+    const selected=
+        findBlipAt(
+            clientX,
+            clientY
+        );
+
+    if(selected){
+
+        showContact(
+            selected.data
+        );
+    }
+}
+
+
+/* ==========================================================
+   INPUT
+   ========================================================== */
+
+canvas.addEventListener(
+    "click",
+    e=>{
+        selectContact(
+            e.clientX,
+            e.clientY
+        );
+    }
+);
+
+
+canvas.addEventListener(
+    "mousemove",
+    e=>{
+
+        if(
+            !contactPanel.classList.contains(
+                "open"
+            )
+        ){
+
+            showTooltip(
+                findBlipAt(
+                    e.clientX,
+                    e.clientY
+                ),
+                e.clientX,
+                e.clientY
+            );
+        }
+    }
+);
+
+
+canvas.addEventListener(
+    "mouseleave",
+    ()=>{
+        radarTooltip.classList.remove(
+            "visible"
+        );
+
+        hoveredBlip=null;
+    }
+);
+
+
+canvas.addEventListener(
+    "touchend",
+    e=>{
+
+        if(
+            e.changedTouches.length
+        ){
+
+            const t=
+                e.changedTouches[0];
+
+            selectContact(
+                t.clientX,
+                t.clientY
+            );
+        }
+
+    },
+    {passive:true}
+);
+
+
+closeContact.addEventListener(
+    "click",
+    hideContact
+);
+
+
+contactPanel.addEventListener(
+    "click",
+    e=>{
+        if(e.target===contactPanel){
+            hideContact();
+        }
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    e=>{
+        if(e.key==="Escape"){
+            hideContact();
+        }
+    }
+);
+
+
+backButton.addEventListener(
+    "click",
+    ()=>{
+        window.location.href="index.html";
+    }
+);
+
+
+/* ==========================================================
+   MAIN RADAR LOOP
+   ========================================================== */
 
 function animate(now){
- const dt=Math.min(40,now-last);last=now;detectedCount=0;ctx.fillStyle='rgba(0,5,1,.13)';ctx.fillRect(0,0,SIZE,SIZE);grid();sweep();
- for(const b of blips){b.age+=dt;const dx=b.x-CX,dy=b.y-CY;b.angle=Math.atan2(dy,dx);const hit=diff(angle,b.angle)<.032;if(hit&&!b.detected){b.detected=true;b.intensity=1;ping(b.data)}if(diff(angle,b.angle)>.11)b.detected=false;if(b.intensity>0){detectedCount++;drawBlip(b,now);b.intensity-=dt*.00020}}
- while(blips.length<MAX_ACTIVE){const before=blips.length;addBlip();if(blips.length===before)break;}
- angle+=dt*.00065;if(angle>Math.PI*2)angle-=Math.PI*2;
- angleReadout.textContent=String(Math.round((angle*180/Math.PI+360)%360)).padStart(3,'0')+'°';contactReadout.textContent=detectedCount;requestAnimationFrame(animate)
+
+    const dt=
+        Math.min(
+            40,
+            now-last
+        );
+
+    last=now;
+
+    detectedCount=0;
+
+
+    /* Radar fade */
+
+    ctx.fillStyle=
+        "rgba(0,5,1,.13)";
+
+    ctx.fillRect(
+        0,
+        0,
+        SIZE,
+        SIZE
+    );
+
+
+    grid();
+    sweep();
+
+
+    /* Update all contacts */
+
+    for(const b of blips){
+
+        b.age+=dt;
+
+
+        /* REAL MOVEMENT */
+
+        updateMovement(
+            b,
+            dt,
+            now
+        );
+
+
+        /* Calculate current angle */
+
+        const dx=
+            b.x-CX;
+
+        const dy=
+            b.y-CY;
+
+        b.angle=
+            Math.atan2(
+                dy,
+                dx
+            );
+
+
+        /* Radar sweep detection */
+
+        const hit=
+            diff(
+                angle,
+                b.angle
+            )<.032;
+
+
+        if(
+            hit &&
+            !b.detected
+        ){
+
+            b.detected=true;
+            b.intensity=1;
+
+            ping(b.data);
+        }
+
+
+        if(
+            diff(
+                angle,
+                b.angle
+            )>.11
+        ){
+
+            b.detected=false;
+        }
+
+
+        /* Draw detected contacts */
+
+        if(b.intensity>0){
+
+            detectedCount++;
+
+            drawBlip(
+                b,
+                now
+            );
+
+            b.intensity-=
+                dt*.00020;
+        }
+    }
+
+
+    /* Keep the radar populated */
+
+    while(
+        blips.length<
+        MAX_ACTIVE
+    ){
+
+        const before=
+            blips.length;
+
+        addBlip();
+
+        if(
+            blips.length===
+            before
+        )break;
+    }
+
+
+    /* Radar sweep */
+
+    angle+=
+        dt*.00065;
+
+    if(
+        angle>
+        Math.PI*2
+    ){
+
+        angle-=
+            Math.PI*2;
+    }
+
+
+    angleReadout.textContent=
+        String(
+            Math.round(
+                (angle*180/Math.PI+360)%360
+            )
+        ).padStart(
+            3,
+            "0"
+        )+
+        "°";
+
+
+    contactReadout.textContent=
+        detectedCount;
+
+
+    requestAnimationFrame(
+        animate
+    );
 }
-seed();requestAnimationFrame(animate);
+
+
+/* ==========================================================
+   START
+   ========================================================== */
+
+seed();
+
+requestAnimationFrame(
+    animate
+);
+
 </script>
+
 </body>
 </html>
